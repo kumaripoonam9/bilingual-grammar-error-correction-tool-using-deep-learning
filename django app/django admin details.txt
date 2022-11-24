@@ -1,0 +1,6 @@
+virtaul env: djangoenv
+
+GEC TOOL Superuser
+username	:	kumaripoonam
+email	:	kumari.p@somaiya.edu
+password	:	2q9sjo20	

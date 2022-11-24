@@ -1,0 +1,72 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    | All tools
+{% endblock title %}
+
+{% block mainbody %}
+
+    <span class="text-center">
+        <div class="mb-5">
+            <h1 class="fw-bolder main-heading">GEC Tools</h1>
+            <h2 class="main-heading">for both Hindi and English</h2>
+        </div>
+
+        <p>A complete set of text tools is now at your fingertips.
+            <br>
+            Check grammar, summarize an article, run a spell checker or chat with a language
+            expert.
+        </p>
+
+        <!-- features -->
+        <div class="box-center">
+            <div class="row mt-5 g-5 w-75">
+                <div class="col-sm-6">
+                    <div class="card">
+                        <div class="card-body">
+                            <!-- <h5 class="card-title"></h5> -->
+                            <i class="fas fa-spell-check fa-6x text-primary-darker"></i>
+                            <p class="card-text p-3">Spelling Correction
+                            </p>
+                            <a href="{% url 'spellcheck' %}" class="btn btn-primary">Start using</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-6">
+                    <div class="card">
+                        <div class="card-body">
+                            <i class="far fa-check-circle fa-6x text-primary-darker"></i>
+                            <p class="card-text p-3">Grammar Correction
+                            </p>
+                            <a href="{% url 'grammarcheck' %}" class="btn btn-primary">Start using</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-sm-6">
+                    <div class="card">
+                        <div class="card-body">
+                            <!-- <h5 class="card-title">Special title treatment</h5> -->
+                            <i class="fas fa-tasks fa-6x text-primary-darker"></i>
+                            <p class="card-text p-3">Text summarizer
+                            </p>
+                            <a href="{% url 'summarizer' %}" class="btn btn-primary">Start using</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-6">
+                    <div class="card">
+                        <div class="card-body">
+                            <i class="fas fa-user-edit fa-6x text-primary-darker"></i>
+                            <!-- <h5 class="card-title">Special title treatment</h5> -->
+                            <p class="card-text p-3">Expert review
+                            </p>
+                            <a href="#" class="btn btn-primary">Start using</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </span>
+
+{% endblock mainbody %}

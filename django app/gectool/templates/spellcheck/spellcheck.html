@@ -1,0 +1,103 @@
+{% extends 'base.html' %}
+
+{% block title %}| Spell Check
+{% endblock title %}
+
+{% block mainbody %}
+    <span class="text-center">
+        <div class="mb-5">
+            <h2 class="fw-bolder main-heading">Spelling Correction</h2>
+            <h3 class="main-heading">for both Hindi and English</h3>
+        </div>
+
+        <p>Select language in which you want to check your spellings:
+        </p>
+        <div class="fs-4">
+            <div class="form-check form-check-inline">
+                <input
+                    class="form-check-input"
+                    type="radio"
+                    name="inlineRadioOptions"
+                    id="inlineRadio1"
+                    value="eng"/>
+                <label class="form-check-label" for="inlineRadio1">English</label>
+            </div>
+
+            <div class="form-check form-check-inline">
+                <input
+                    class="form-check-input"
+                    type="radio"
+                    name="inlineRadioOptions"
+                    id="inlineRadio2"
+                    value="hi"/>
+                <label class="form-check-label" for="inlineRadio2">Hindi</label>
+            </div>
+        </div>
+
+        <!-- form -->
+        <div class="box-center row">
+
+            <form method="post" class="bg-white p-5 m-5 rounded-5 col-8 shadow-3">
+                {% csrf_token %}
+                <!-- Message input -->
+                <div class="form-outline mb-4">
+                    <textarea
+                        class="form-control"
+                        id="text_to_check"
+                        name="text_to_check"
+                        rows="10"
+                        maxlength="500"
+                        required></textarea>
+                    <label class="form-label" for="text_to_check">Enter text here</label>
+                </div>
+
+                <!-- Submit button -->
+                <button type="submit" class="btn btn-primary btn-block mb-4">Correct Spellings</button>
+            </form>
+
+            {% if corrected_text != '' %}
+
+            <div class="card text-center col-9">
+                <div class="card-header">
+                    <ul class="nav nav-pills card-header-tabs">
+                        <li class="nav-item">
+                            <button class="nav-link active btn btn-secondary" aria-current="true"
+                                onclick="copyText()">Copy text</button>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link active" href="#!">Download</a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="card-body">
+                    <h5 class="card-title pb-3">Spellings Corrected Output</h5>
+                    <p class="card-text pb-4" id="result_text">{{corrected_text}}</p>
+                </div>
+            </div>
+                
+            {% endif %}
+        </div>
+    </span>
+
+    <script>
+        function customAlert(msg, duration) {
+            var styler = document.createElement("div");
+
+            styler.setAttribute("class", "text-center fixed-bottom alert alert-success m-3 col-3");
+            styler.innerHTML = msg;
+
+            setTimeout(function () {
+                styler.parentNode.removeChild(styler);
+            }, duration);
+
+            document.body.appendChild(styler);
+        }
+
+        function copyText() {
+            var text = document.getElementById("result_text").textContent;
+            navigator.clipboard.writeText(text);
+
+            customAlert("Text copied to clipboard!", "2500");
+        }
+    </script>
+{% endblock mainbody %}
