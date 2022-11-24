@@ -1,1 +1,1 @@
-# grammar-error-correction-tool-using-deep-learning-algos
+# Bilingual grammar error correction tool using deep learning
