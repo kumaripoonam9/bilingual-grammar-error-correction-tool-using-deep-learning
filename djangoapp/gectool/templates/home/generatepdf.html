@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GEC Tools</title>
+    <link rel="icon" type="image/x-icon" href="assets/images/gec.ico">
+</head>
+
+<body style="padding: 2rem;" onload="getPDF()">
+
+    <div style="text-align:center">
+        <h1>Grammar Error Correction (GEC) Tool</h1>
+        <h2>for both Hindi and English</h2>
+    </div>
+
+    <section style="padding-top: 2rem;">
+        <h3><i>{{toolname}} Result</i></h3>
+        <p>{{corrected_text}}</p>
+        <p>{{name}}</p>
+    </section>
+
+
+    <footer style="padding-top: 4rem; text-align:center"><i>© 2022 Grammar Error Correction (GEC) Software</i></footer>
+
+    <script>
+        function getPDF() {
+            window.print();
+        }
+    </script>
+
+
+</body>
+
+</html>
