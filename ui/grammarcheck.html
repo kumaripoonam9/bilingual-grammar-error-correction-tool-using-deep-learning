@@ -78,6 +78,8 @@
             <h3 class="main-heading">for both Hindi and English</h3>
         </div>
 
+        
+
         <!-- dropdown -->
 
 
@@ -106,13 +108,38 @@
                         <textarea class="form-control" id="form4Example3" rows="10" maxlength="1000"></textarea>
                         <label class="form-label" for="form4Example3">Enter text here</label>
                     </div>
+
+                    <p class="or">OR</p>
+
+
+
+                    <div class="">
+                        <h6 class="main-heading pb-2">Speak here to get results:</h6>
+                        <button id="start-recording" class="btn-mic btn btn-secondary btn-lg mb-4">
+                            <i class="fas fa-3x fa-microphone"></i>
+                            Start
+                        </button>
+                        <button id="start-recording" class="btn-mic btn btn-secondary btn-lg mb-4">
+                            <i class="fas fa-3x fa-microphone-slash"></i>
+                            stop
+                        </button>
+                    </div>
+
+                    <p class="or">OR</p>
+
+                    <div class="mb-5">
+                        <h6 class="main-heading pb-2">Upload your file here:</h6>
+                        <input type="file" class="m-auto w-75 form-control form-control-lg" id="customFile" />
+                    </div>
+
+
                     <!-- Submit button -->
-                    <button type="submit" class="btn btn-primary btn-block mb-4">Correct Grammar</button>
+                    <button type="submit" class="btn btn-lg btn-primary btn-block mb-4">Correct Grammar</button>
                 </div>
 
             </form>
 
-            <div class="card text-center mt-5 col-9">
+            <!-- <div class="card text-center mt-5 col-9">
                 <div class="card-header">
                     <ul class="nav nav-pills card-header-tabs">
                         <li class="nav-item">
@@ -128,7 +155,7 @@
                     <h5 class="card-title pb-3">Grammar Corrected Output</h5>
                     <p class="card-text pb-4" id="result_text">{{corrected_text}}</p>
                 </div>
-            </div>
+            </div> -->
 
 
 

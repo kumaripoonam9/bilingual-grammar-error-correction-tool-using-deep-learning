@@ -4,6 +4,7 @@
 {% endblock title %}
 
 {% block mainbody %}
+
     <span class="text-center">
         <div class="mb-5">
             <h2 class="fw-bolder main-heading">Spelling Correction</h2>
@@ -23,19 +24,20 @@
                 <div class="fs-4 mb-4">
                     <div class="form-check form-check-inline">
                         <input
-                            required
-                            class="form-check-input"
+                            {% comment %} required {% endcomment %}
+                            class="form-check-input-lg"
                             type="radio"
                             name="language"
                             id="eng"
-                            value="eng"/>
-                        <label class="form-check-label" for="eng">English</label>
+                            value="eng" 
+                            checked />
+                        <label class="form-check-label" for="eng" >English</label>
                     </div>
         
                     <div class="form-check form-check-inline">
                         <input
-                            required
-                            class="form-check-input"
+                            {% comment %} required {% endcomment %}
+                            class="form-check-input-lg"
                             type="radio"
                             name="language"
                             id="hi"
@@ -53,9 +55,40 @@
                             name="text_to_check"
                             rows="10"
                             maxlength="1000"
-                            required></textarea>
+                            ></textarea>
                         <label class="form-label" for="text_to_check">Enter text here</label>
                     </div>
+
+                    <p class="or">OR</p>
+
+                    {% comment %} sppech to text {% endcomment %}
+                    <div class="">
+                        <h6 class="main-heading pb-2">Speak here to get results:</h6>
+                        <button 
+                            id="audio_btn" 
+                            name="audio_btn" 
+                            class="btn-mic btn btn-secondary btn-lg mb-4"
+                            onclick="record_audio()" >
+                            <i class="fas fa-3x fa-microphone"></i>
+                        </button>
+                        
+                        <script>
+                            {% comment %} record_audio js {% endcomment %}
+                            function record_audio() {
+                                
+                            }
+                        </script>
+
+                    </div>
+
+                    <p class="or">OR</p>
+
+                    {% comment %} file uploads {% endcomment %}
+                    <div class="mb-5">
+                        <h6 class="main-heading pb-2">Upload your file here:</h6>
+                        <input type="file" class="m-auto w-75 form-control form-control-lg" id="customFile" />
+                    </div>
+
 
                     <!-- Submit button -->
                     <button type="submit" class="btn btn-primary btn-block mb-4">Correct spellings</button>
@@ -63,6 +96,7 @@
                 
             </form>
 
+            {% comment %} corrected output {% endcomment %}
             {% if corrected_text != '' %}
             <div class="card text-center mt-5 col-9">
                 <div class="card-header">

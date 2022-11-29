@@ -12,7 +12,25 @@
             <h5 class="p-2 text-center">Register</h5>
 
             {% csrf_token %}
-            {{form}}
+            {% comment %} {{form}} {% endcomment %}
+
+           
+
+            {% for field in form %}
+            <div class="form-outline mb-4">
+                {% comment %} <input type="email" id="form3Example3" class="form-control"/> {% endcomment %}
+                <label class="form-label" for="form3Example3">{{ field.label_tag }}</label>
+                {{ field }}
+                {% if field.help_text %}
+                    <small class="text-secondary">{{ field.help_text }}</small>
+                {% endif %}
+                {% for error in field.errors %}
+                    <small class="text-danger">{{ error }}</small>
+                    {% comment %} <p style="color: red">{{ error }}</p> {% endcomment %}
+                {% endfor %}
+            </div>
+            {% endfor %}
+            
 
             {% comment %} <div class="row mb-4">
                 <div class="col">
@@ -52,22 +70,7 @@
                 <p>Already a member?
                     <a href="{% url 'login' %}">Login</a>
                 </p>
-                <!-- <p>or sign up with:</p>
-            <button type="button" class="btn btn-primary btn-floating mx-1">
-                <i class="fab fa-facebook-f"></i>
-            </button>
-
-            <button type="button" class="btn btn-primary btn-floating mx-1">
-                <i class="fab fa-google"></i>
-            </button>
-
-            <button type="button" class="btn btn-primary btn-floating mx-1">
-                <i class="fab fa-twitter"></i>
-            </button>
-
-            <button type="button" class="btn btn-primary btn-floating mx-1">
-                <i class="fab fa-github"></i>
-            </button> -->
+                
             </div>
         </form>
     </div>

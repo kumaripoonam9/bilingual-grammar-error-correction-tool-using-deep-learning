@@ -54,7 +54,7 @@ h4.main-heading {
 }
 
 
-.form-check-input[type=radio] {
+.form-check-input-lg[type=radio] {
     margin-top: 8px;
     width: 1.5rem;
     height: 1.5rem;
@@ -66,6 +66,18 @@ div.tool-result {
 }
 .tool-result h5 {
     color: #c8d8f0;
+}
+
+.btn-mic{
+    height: 6rem; width: 6rem;
+    border-radius: 50%;
+    font-size: x-small;
+}
+
+.or {
+    font-weight: 500;
+    font-size: larger;
+    padding: 2rem;
 }
 
 /* .bg-1-purple {

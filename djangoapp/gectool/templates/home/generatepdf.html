@@ -9,7 +9,7 @@
     <link rel="icon" type="image/x-icon" href="assets/images/gec.ico">
 </head>
 
-<body style="padding: 2rem;" onload="getPDF()">
+<body style="padding: 2rem; background-color: #F3F3FB" onload="getPDF()">
 
     <div style="text-align:center">
         <h1>Grammar Error Correction (GEC) Tool</h1>
@@ -17,13 +17,12 @@
     </div>
 
     <section style="padding-top: 2rem;">
-        <h3><i>{{toolname}} Result</i></h3>
-        <p>{{corrected_text}}</p>
-        <p>{{name}}</p>
+        <h3><i>{{toolname}} Report</i></h3>
+        <p style="padding-top: 1rem;">{{corrected_text}}</p>
     </section>
 
 
-    <footer style="padding-top: 4rem; text-align:center"><i>© 2022 Grammar Error Correction (GEC) Software</i></footer>
+    <footer style="padding-top: 5rem; text-align:center"><i>© 2022 Grammar Error Correction (GEC) Software</i></footer>
 
     <script>
         function getPDF() {

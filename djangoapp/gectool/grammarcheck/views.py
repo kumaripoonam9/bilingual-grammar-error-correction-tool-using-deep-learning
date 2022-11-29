@@ -4,6 +4,17 @@ from .grammarcheck import correct_grammar
 # Create your views here.
 def grammarcheck(request):
     corrected_text = ""
+    errors = {
+        "lang": False,
+        "text": False,
+        "audio": False,
+        "file": False
+    }
+
+    # speech to text
+    # if request.GET.get('audio_btn'):
+    #     print("audio")
+
     if request.method=="POST":
         language = request.POST.get('language')
         text_to_check = request.POST.get('text_to_check')
@@ -17,5 +28,7 @@ def grammarcheck(request):
                 corrected_text += " "
         else:
             corrected_text = "hindi"
+
+        corrected_text = corrected_text.capitalize()
     
     return render(request, "grammarcheck/grammarcheck.html", {"corrected_text": corrected_text})
