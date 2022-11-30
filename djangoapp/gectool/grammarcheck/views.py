@@ -1,7 +1,9 @@
 from django.shortcuts import render
+from django.contrib.auth.decorators import login_required
 from .grammarcheck import correct_grammar
 
 # Create your views here.
+@login_required(login_url='login')
 def grammarcheck(request):
     corrected_text = ""
     errors = {

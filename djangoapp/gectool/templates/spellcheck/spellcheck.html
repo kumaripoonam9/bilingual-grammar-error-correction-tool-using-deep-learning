@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load static %}
 
 {% block title %}| Spell Check
 {% endblock title %}
@@ -61,32 +62,39 @@
 
                     <p class="or">OR</p>
 
-                    {% comment %} sppech to text {% endcomment %}
-                    <div class="">
+                    <div class="" id="controls">
                         <h6 class="main-heading pb-2">Speak here to get results:</h6>
-                        <button 
-                            id="audio_btn" 
-                            name="audio_btn" 
-                            class="btn-mic btn btn-secondary btn-lg mb-4"
-                            onclick="record_audio()" >
+                        <!-- start -->
+                        <button id="recordButton" class="btn-mic btn btn-secondary btn-lg mb-4">
                             <i class="fas fa-3x fa-microphone"></i>
+                            Start
                         </button>
-                        
-                        <script>
-                            {% comment %} record_audio js {% endcomment %}
-                            function record_audio() {
-                                
-                            }
-                        </script>
-
+                        <!-- pause : hidden bcuz not working !!!-->
+                        <button id="pauseButton" class="d-none btn-mic btn btn-secondary btn-lg mb-4" disabled >
+                            <i class="fas fa-3x fa-pause"></i>
+                            pause
+                        </button>
+                        <!-- stop -->
+                        <button id="stopButton" class="btn-mic btn btn-secondary btn-lg mb-4" disabled>
+                            <i class="fas fa-3x fa-microphone-slash"></i>
+                            stop
+                        </button>
                     </div>
+
+                    <!-- <div id="formats">Format: start recording to see sample rate</div> -->
+                    <!-- <p><strong>Recordings:</strong></p> -->
+                    <div id="recordingsList"></div>
+                    <!-- inserting these scripts at the end to be able to use all the elements in the DOM -->
+                    <script src="{% static 'js/recorder.js' %}"></script>
+                    <script src="{% static 'js/app.js' %}"></script>
 
                     <p class="or">OR</p>
 
                     {% comment %} file uploads {% endcomment %}
                     <div class="mb-5">
                         <h6 class="main-heading pb-2">Upload your file here:</h6>
-                        <input type="file" class="m-auto w-75 form-control form-control-lg" id="customFile" />
+                        <p class="small">Note: Kindly ensure the uploaded file is in either .doc, .docx, .pdf, .txt formats</p>
+                        <input type="file" class="m-auto w-75 form-control form-control-lg" id="customFile" accept=".doc,.docx,.pdf,.txt" />
                     </div>
 
 

@@ -1,8 +1,10 @@
 from django.shortcuts import render
 from .eng_spellcheck import correct_spelling
 from django.http import HttpResponse
-
+from django.contrib.auth.decorators import login_required
 # Create your views here.
+
+@login_required(login_url='login')
 def spellcheck(request):
 
     corrected_text = ""

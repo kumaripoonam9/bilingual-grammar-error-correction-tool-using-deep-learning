@@ -6,9 +6,13 @@
 
 {% block mainbody %}
     <div class="box-center">
-        <form class="bg-white p-5 rounded-5 col-4">
+        <form class="bg-white p-5 rounded-5 col-4" method="post">
             <h5 class="p-2 text-center">Login</h5>
-            <!-- Email input -->
+
+            {% csrf_token %}
+            {{form}}
+
+            {% comment %} <!-- Email input -->
             <div class="form-outline mb-4">
                 <input type="email" id="form2Example1" class="form-control"/>
                 <label class="form-label" for="form2Example1">Email address</label>
@@ -41,10 +45,10 @@
                     <!-- Simple link -->
                     <a href="">Forgot password?</a>
                 </div>
-            </div>
+            </div> {% endcomment %}
 
             <!-- Submit button -->
-            <button type="submit" class="btn btn-primary btn-block mb-4">Sign in</button>
+            <button type="submit" class="btn btn-primary btn-block mb-4">Log in</button>
 
             <!-- Register buttons -->
             <div class="text-center">
@@ -52,6 +56,7 @@
                     <a href="{% url 'register' %}">Register</a>
                 </p>
             </div>
+            
         </form>
     </div>
 {% endblock mainbody %}

@@ -78,7 +78,7 @@
             <h3 class="main-heading">for both Hindi and English</h3>
         </div>
 
-        
+
 
         <!-- dropdown -->
 
@@ -113,17 +113,31 @@
 
 
 
-                    <div class="">
+                    <div class="" id="controls">
                         <h6 class="main-heading pb-2">Speak here to get results:</h6>
-                        <button id="start-recording" class="btn-mic btn btn-secondary btn-lg mb-4">
+                        <!-- start -->
+                        <button id="recordButton" class="btn-mic btn btn-secondary btn-lg mb-4">
                             <i class="fas fa-3x fa-microphone"></i>
                             Start
                         </button>
-                        <button id="start-recording" class="btn-mic btn btn-secondary btn-lg mb-4">
+                        <!-- pause : hidden bcuz not working !!!-->
+                        <button id="pauseButton" class="d-none btn-mic btn btn-secondary btn-lg mb-4" disabled >
+                            <i class="fas fa-3x fa-pause"></i>
+                            pause
+                        </button>
+                        <!-- stop -->
+                        <button id="stopButton" class="btn-mic btn btn-secondary btn-lg mb-4" disabled>
                             <i class="fas fa-3x fa-microphone-slash"></i>
                             stop
                         </button>
                     </div>
+
+                    <!-- <div id="formats">Format: start recording to see sample rate</div> -->
+                    <!-- <p><strong>Recordings:</strong></p> -->
+                    <div id="recordingsList"></div>
+                    <!-- inserting these scripts at the end to be able to use all the elements in the DOM -->
+                    <script src="js/recorder.js"></script>
+                    <script src="js/app.js"></script>
 
                     <p class="or">OR</p>
 
