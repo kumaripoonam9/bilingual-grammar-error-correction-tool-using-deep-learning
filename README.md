@@ -19,3 +19,7 @@
 - [x] spell check
 - [x] tools
 - [ ] templates
+
+```
+pip install -r requirements.txt
+```
