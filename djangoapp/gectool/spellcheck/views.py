@@ -19,7 +19,7 @@ def spellcheck(request):
     
     if request.method=="POST":
         lang_by_user = request.POST.get('lang_by_user')
-        print(lang_by_user)
+        # print(lang_by_user)
 
         text_to_check = request.POST.get('text_to_check')
         # errors['text'] = True
@@ -28,10 +28,12 @@ def spellcheck(request):
         # sentence = 1
 
         lang_detected = detect(text_to_check)
+        lang_detected = lang_detected.split(" ")[0]
 
         # text_to_check = "whereis th elove hehad dated forImuch of thepast who couqdn'tread in sixtgrade and ins pired him"
-
-        if lang_detected!=lang_by_user:
+        print(lang_by_user, lang_detected)
+        # if lang_by_user=="en" and lang_by_user==lang_detected:
+        if lang_by_user=="en" and lang_detected!=lang_by_user or lang_by_user=="hi" and lang_detected=="en":
             error = 1
         else:
             if lang_by_user=="en":
@@ -55,10 +57,14 @@ def spellcheck(request):
                         corrected_text = hi_spellcheck(text_to_check[0])
                 else:
                     for t in text_to_check:
-                        if not pspell.lookup(t):
+                        if t=="।":
+                            corrected_text += t
+                        elif not pspell.lookup(t):
                             print("incorrect w:", t)
                             ct = hi_spellcheck(t)
                             corrected_text += ct[0]
+                        # elif t=="।":
+                        #     corrected_text += t
                         else:
                             print("correct w:", t)
                             corrected_text += t
