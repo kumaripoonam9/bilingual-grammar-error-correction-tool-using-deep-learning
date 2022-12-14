@@ -14,12 +14,7 @@ import phunspell
 def spellcheck(request):
 
     corrected_text = ""
-    errors = {
-        "lang": False,
-        "text": False,
-        "audio": False,
-        "file": False
-    }
+    error = 0
     sentence = 1
     
     if request.method=="POST":
@@ -27,7 +22,7 @@ def spellcheck(request):
         print(lang_by_user)
 
         text_to_check = request.POST.get('text_to_check')
-        errors['text'] = True
+        # errors['text'] = True
 
         # no_of_suggestions = 1
         # sentence = 1
@@ -36,41 +31,42 @@ def spellcheck(request):
 
         # text_to_check = "whereis th elove hehad dated forImuch of thepast who couqdn'tread in sixtgrade and ins pired him"
 
-        # if lang_detected!=
-
-        if lang_by_user=="eng":
-            corrected_text = correct_spelling(text_to_check)
-            print(corrected_text)
-            corrected_text = corrected_text[0].term.capitalize()
-            print(corrected_text)
-
+        if lang_detected!=lang_by_user:
+            error = 1
         else:
-            # no_of_suggestions = 2
-            pspell = phunspell.Phunspell('hi_IN')
-            text_to_check = text_to_check.split(" ")
+            if lang_by_user=="en":
+                corrected_text = correct_spelling(text_to_check)
+                print(corrected_text)
+                corrected_text = corrected_text[0].term.capitalize()
+                print(corrected_text)
 
-            print(text_to_check)
-
-            if len(text_to_check)==1:
-                if pspell.lookup(text_to_check[0]):
-                    corrected_text = "शब्द पहले से ही सही है।"
-                else:
-                    sentence = 0
-                    corrected_text = hi_spellcheck(text_to_check[0])
             else:
-                for t in text_to_check:
-                    if not pspell.lookup(t):
-                        print("incorrect w:", t)
-                        ct = hi_spellcheck(t)
-                        corrected_text += ct[0]
+                # no_of_suggestions = 2
+                pspell = phunspell.Phunspell('hi_IN')
+                text_to_check = text_to_check.split(" ")
+
+                print(text_to_check)
+
+                if len(text_to_check)==1:
+                    if pspell.lookup(text_to_check[0]):
+                        corrected_text = "शब्द पहले से ही सही है।"
                     else:
-                        print("correct w:", t)
-                        corrected_text += t
-                    corrected_text += " "
-            # print(corrected_text)
+                        sentence = 0
+                        corrected_text = hi_spellcheck(text_to_check[0])
+                else:
+                    for t in text_to_check:
+                        if not pspell.lookup(t):
+                            print("incorrect w:", t)
+                            ct = hi_spellcheck(t)
+                            corrected_text += ct[0]
+                        else:
+                            print("correct w:", t)
+                            corrected_text += t
+                        corrected_text += " "
+                # print(corrected_text)
         request.session['corrected_text'] = corrected_text
     
-    return render(request, "spellcheck/spellcheck.html", {"corrected_text": corrected_text, "sentence":sentence})
+    return render(request, "spellcheck/spellcheck.html", {"corrected_text": corrected_text, "sentence":sentence, "error":error})
 
 def pdf(request):
     corrected_text = request.session.get('corrected_text')

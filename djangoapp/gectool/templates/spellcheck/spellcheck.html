@@ -29,8 +29,8 @@
                             class="form-check-input-lg"
                             type="radio"
                             name="lang_by_user"
-                            id="eng"
-                            value="eng" 
+                            id="en"
+                            value="en" 
                             checked />
                         <label class="form-check-label" for="eng" >English</label>
                     </div>
@@ -103,6 +103,13 @@
                 </div>
             </form>
 
+            {% if error == 1 %}
+            <p class="card-text pb-4 class text-center fixed-bottom alert alert-danger m-3 col-3" id="error_text">
+                <b>Error:</b><br>
+                Language from text and language selected by user don't match!
+            </p>
+            {% endif %}
+
             
             {% comment %} corrected output {% endcomment %}
             {% if corrected_text != '' %}
@@ -163,6 +170,13 @@
 
         function copyText() {
             var text = document.getElementById("result_text").textContent;
+            navigator.clipboard.writeText(text);
+
+            customAlert("Text copied to clipboard!", "2500");
+        }
+
+        function errorText() {
+            var text = document.getElementById("error_text").textContent;
             navigator.clipboard.writeText(text);
 
             customAlert("Text copied to clipboard!", "2500");
