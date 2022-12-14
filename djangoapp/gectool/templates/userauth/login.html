@@ -10,7 +10,21 @@
             <h5 class="p-2 text-center">Login</h5>
 
             {% csrf_token %}
-            {{form}}
+            {% comment %} {{form}} {% endcomment %}
+            {% for f in form %}
+                {{f.label}}
+                {{f}}
+                {% if f.help_text %}
+                    <br>
+                    {{f.help_text}}
+                {% endif %}
+                {% if f.error_messages %}
+                    {% for e in f.error_messages %}
+                        <li><small class="text-danger">{{e}}</small></li>
+                    {% endfor %}
+                {% endif %}
+                <br><br>
+            {% endfor %}
 
             {% comment %} <!-- Email input -->
             <div class="form-outline mb-4">

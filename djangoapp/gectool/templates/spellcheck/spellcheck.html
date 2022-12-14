@@ -28,7 +28,7 @@
                             {% comment %} required {% endcomment %}
                             class="form-check-input-lg"
                             type="radio"
-                            name="language"
+                            name="lang_by_user"
                             id="eng"
                             value="eng" 
                             checked />
@@ -40,7 +40,7 @@
                             {% comment %} required {% endcomment %}
                             class="form-check-input-lg"
                             type="radio"
-                            name="language"
+                            name="lang_by_user"
                             id="hi"
                             value="hi"/>
                         <label class="form-check-label" for="hi">Hindi</label>
@@ -101,16 +101,16 @@
                     <!-- Submit button -->
                     <button type="submit" class="btn btn-primary btn-block mb-4">Correct spellings</button>
                 </div>
-                
             </form>
 
+            
             {% comment %} corrected output {% endcomment %}
             {% if corrected_text != '' %}
             <div class="card text-center mt-5 col-9">
                 <div class="card-header">
                     <ul class="nav nav-pills card-header-tabs">
                         <li class="nav-item">
-                            <button class="nav-link active btn btn-secondary" aria-current="true"
+                               <button class="nav-link active btn btn-secondary" aria-current="true"
                                 onclick="copyText()">Copy text</button>
                         </li>
                         <li class="nav-item">
@@ -123,7 +123,24 @@
                 </div>
                 <div class="card-body">
                     <h5 class="card-title pb-3">Spellings Corrected Output</h5>
-                    <p class="card-text pb-4" id="result_text">{{corrected_text}}</p>
+                    <p class="card-text pb-4" id="result_text">
+                        
+                        {% if sentence == 0 %}
+                            {% for ct in corrected_text %}
+                                {{ct}} <br>
+                            {% endfor %}
+                        {% else %}
+                            {{corrected_text}}  
+                        {% endif %}
+                        
+                        {% comment %} {% if no_of_suggestions == 1 %}
+                            {{corrected_text}}
+                        {% else %}
+                            {% for t in corrected_text.items %}
+                                {{t}} =  {{corrected_text.t}} <br>
+                            {% endfor %}
+                        {% endif %}                         {% endcomment %}
+                    </p>
                 </div>
             </div>
             {% endif %}

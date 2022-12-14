@@ -31,5 +31,5 @@ def correct_spelling(input_term):
     return suggestions
 
 
-input_term = ("whereis th elove hehad dated forImuch of thepast who couqdn'tread in sixtgrade and ins pired him")
-correct_spelling(input_term)
+# input_term = ("whereis th elove hehad dated forImuch of thepast who couqdn'tread in sixtgrade and ins pired him")
+# correct_spelling(input_term)
