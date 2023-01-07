@@ -37,11 +37,14 @@ def spellcheck(request):
             error = 1
         else:
             if lang_by_user=="en":
-                corrected_text = correct_spelling(text_to_check)
-                print(corrected_text)
-                corrected_text = corrected_text[0].term.capitalize()
-                print(corrected_text)
-
+                text_to_check = text_to_check.split(".")
+                print(text_to_check)
+                for t in text_to_check:
+                    ct = correct_spelling(t)
+                    # print(corrected_text)
+                    ct = ct[0].term.capitalize()
+                    corrected_text = corrected_text + ct + ". "
+                    # print(corrected_text)
             else:
                 # no_of_suggestions = 2
                 pspell = phunspell.Phunspell('hi_IN')

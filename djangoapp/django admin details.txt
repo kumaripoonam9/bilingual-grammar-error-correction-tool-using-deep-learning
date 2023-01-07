@@ -1,6 +1,12 @@
-virtaul env: djangoenv
+virtaul env: env
 
 GEC TOOL Superuser
 username	:	kumaripoonam
 email	:	kumari.p@somaiya.edu
 password	:	2q9sjo20	
+
+
+
+python -m pip install -U langdetect
+
+python -m pip freeze >  requirements.txt
