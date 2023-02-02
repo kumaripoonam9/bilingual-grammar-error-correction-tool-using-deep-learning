@@ -80,6 +80,10 @@ div.tool-result {
     padding: 2rem;
 }
 
+p#result_text {
+    text-align: left;
+}
+
 /* .bg-1-purple {
     background-color: #F3F3FB !important;
 }

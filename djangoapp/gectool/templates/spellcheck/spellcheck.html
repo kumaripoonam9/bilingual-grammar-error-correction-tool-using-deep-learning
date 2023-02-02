@@ -12,18 +12,15 @@
             <h3 class="main-heading">for both Hindi and English</h3>
         </div>
 
-        
+        {% comment %} type in form {% endcomment %}
+        <div class="box-center row mb-4">
 
-        <!-- form -->
-        <div class="box-center row">
-
-            <form method="post" class="">
+            <form method="post" name="textarea_form" class="">
                 {% csrf_token %}
 
                 {% comment %} language {% endcomment %}
-                <p>Select language in which you want to check your spellings:
-                </p>
-                <div class="fs-4 mb-4">
+                <p>Select language in which you want to check your spellings:</p>
+                <div class="fs-4 mb-3">
                     <div class="form-check form-check-inline">
                         <input
                             {% comment %} required {% endcomment %}
@@ -60,7 +57,31 @@
                         <label class="form-label" for="text_to_check">Enter text here</label>
                     </div>
 
-                    <p class="or">OR</p>
+                    <!-- Submit button -->
+                    <button name="textarea_form_button" type="submit" class="btn btn-primary btn-block mb-4">Correct spellings</button>
+                </div>
+            </form>
+
+            {% comment %} lang detection error {% endcomment %}
+            {% if error == 1 %}
+            <p class="card-text pb-4 class text-center fixed-bottom alert alert-danger m-3 col-3" id="error_text">
+                <b>Error:</b><br>
+                Language from input and language selected by user don't match!
+            </p>
+            {% endif %}
+
+        </div>
+
+        <p class="or">OR</p>
+
+        {% comment %} audio form {% endcomment %}
+        <div class="box-center row mb-4">
+
+            {% comment %} audio form {% endcomment %}
+            <form method="post" name="audio_form" class="">
+                {% csrf_token %}
+
+                <div class="m-auto bg-white p-5 pb-4 rounded-5 col-8 shadow-3">
                     {% comment %} audio input {% endcomment %}
                     <div class="" id="controls">
                         <h6 class="main-heading pb-2">Speak here to get results:</h6>
@@ -86,21 +107,8 @@
                     <script src="{% static 'js/recorder.js' %}"></script>
                     <script src="{% static 'js/app.js' %}"></script>
 
-                    <p class="or">OR</p>
-
-                    {% comment %} file uploads {% endcomment %}
-                    <div class="mb-5">
-                        <h6 class="main-heading pb-2">Upload your file here:</h6>
-                        <p class="small">Note: Kindly ensure the uploaded file is in either .doc, .docx, .pdf, .txt formats</p>
-                        <input 
-                            type="file" class="m-auto w-75 form-control form-control-lg" id="uploaded_file" 
-                            name="uploaded_file" 
-                            accept=".doc,.docx,.pdf,.txt" />
-                    </div>
-
-
                     <!-- Submit button -->
-                    <button type="submit" class="btn btn-primary btn-block mb-4">Correct spellings</button>
+                    <button name="audio_form_button" type="submit" class="btn btn-primary btn-block mb-4">Correct spellings</button>
                 </div>
             </form>
 
@@ -111,8 +119,42 @@
                 Language from input and language selected by user don't match!
             </p>
             {% endif %}
+        </div>
+        
+        <p class="or">OR</p>
 
-            
+        {% comment %} file form {% endcomment %}
+        <div class="box-center row mb-4">
+            <form method="post" name="file_form" class="" enctype="multipart/form-data">
+                {% csrf_token %}
+                <div class="m-auto bg-white p-5 pb-4 rounded-5 col-8 shadow-3">
+                    {% comment %} file uploads {% endcomment %}
+                    <div class="mb-5">
+                        <h6 class="main-heading pb-2">Upload your file here:</h6>
+                        <p class="small">Note: Kindly ensure the uploaded file is in either .doc, .docx, .pdf, .txt formats</p>
+                        {% for inp in file_form %}{{inp}}{% endfor %}
+                        {% comment %} <input 
+                            type="file" class="m-auto w-75 form-control form-control-lg" id="uploaded_file" 
+                            name="uploaded_file" 
+                            accept=".doc,.docx,.pdf,.txt" /> {% endcomment %}
+                    </div>
+
+                    <!-- Submit button -->
+                    <button name="file_form_button" type="submit" class="btn btn-primary btn-block mb-4">Correct spellings</button>
+                </div>
+            </form>
+
+            {% comment %} lang detection error {% endcomment %}
+            {% if error == 1 %}
+            <p class="card-text pb-4 class text-center fixed-bottom alert alert-danger m-3 col-3" id="error_text">
+                <b>Error:</b><br>
+                Language from input and language selected by user don't match!
+            </p>
+            {% endif %}
+        </div>
+
+
+        <div class="box-center row">
             {% comment %} corrected output {% endcomment %}
             {% if corrected_text != '' %}
             <div class="card text-center mt-5 col-9">
@@ -120,7 +162,8 @@
                     <ul class="nav nav-pills card-header-tabs">
                         <li class="nav-item">
                                <button class="nav-link active btn btn-secondary" aria-current="true"
-                                onclick="copyText()">Copy text</button>
+                               autofocus 
+                               onclick="copyText()">Copy text</button>
                         </li>
                         <li class="nav-item">
                             <a href="{% url 'spellcheck/pdf' %}">
@@ -132,24 +175,7 @@
                 </div>
                 <div class="card-body">
                     <h5 class="card-title pb-3">Spellings Corrected Output</h5>
-                    <p class="card-text pb-4" id="result_text">
-                        
-                        {% if sentence == 0 %}
-                            {% for ct in corrected_text %}
-                                {{ct}} <br>
-                            {% endfor %}
-                        {% else %}
-                            {{corrected_text}}  
-                        {% endif %}
-                        
-                        {% comment %} {% if no_of_suggestions == 1 %}
-                            {{corrected_text}}
-                        {% else %}
-                            {% for t in corrected_text.items %}
-                                {{t}} =  {{corrected_text.t}} <br>
-                            {% endfor %}
-                        {% endif %}                         {% endcomment %}
-                    </p>
+                    <p class="text-start card-text pb-4" id="result_text">{{ corrected_text|linebreaksbr }}</p>
                 </div>
             </div>
             {% endif %}
