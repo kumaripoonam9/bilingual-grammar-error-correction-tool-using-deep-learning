@@ -84,31 +84,41 @@ p#result_text {
     text-align: left;
 }
 
-/* .bg-1-purple {
-    background-color: #F3F3FB !important;
+form.django-form input {
+    width: 100%;
 }
 
-.bg-2-purple {
-    background-color: #D8D8EF !important;
+/*---------------------- expert chat box ---------------------*/
+
+p.msg-send {
+    background-color: #deeaff;
+    padding: .6rem 1rem;
+    max-width: 60%;
+    color: black;
+    border-radius: .5rem;
+    float: right;
 }
 
-.bg-3-purple {
-    background-color: #5D5FEF !important;
+p.msg-recieved {
+    background-color: #1e4178;
+    padding: .6rem 1rem;
+    max-width: 60%;
+    color: aliceblue;
+    border-radius: .5rem;
 }
 
-.bg-4-purple {
-    background-color: #2628A1 !important;
+tr#chat-type-box td {
+    background-color: #243552;
+    border-radius: .5rem;
+    padding: .3rem .4rem;
+    position: sticky;
+    bottom: 1rem;
+    margin-bottom: 1rem;
 }
 
-
-.btn-purple {
-    background-color: #5D5FEF;
-    color: white;
+tr#chat-type-box form input,
+tr#chat-type-box form button {
+    border: none;
+    border-radius: .2rem;
+    height: 3rem;
 }
-
-.btn-purple:hover {
-    background-color: #2628A1;
-    color: white;
-} */
-
-/**************** navbar **************/

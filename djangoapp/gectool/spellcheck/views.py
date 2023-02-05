@@ -96,6 +96,7 @@ def spellcheck(request):
                 elif ext=='pdf':
                     text_to_check = pdfToText(filename)
 
+                # text coorections
                 text_to_check = text_to_check.split("\n")
                 print(text_to_check)
                 for t in text_to_check:

@@ -1,72 +1,87 @@
 {% extends 'base.html' %}
 
 {% block title %}
-    | All tools
+    | {{request.user.username}} profile
 {% endblock title %}
 
 {% block mainbody %}
 
     <span class="text-center">
-        <div class="mb-5">
-            <h1 class="fw-bolder main-heading">GEC Tools</h1>
-            <h2 class="main-heading">for both Hindi and English</h2>
+        
+        <div class="mb-5 ">
+            <h2 class="fw-bolder main-heading">Profile</h2>
+            <h3 class="main-heading text-capitalize">{{request.user.first_name}} {{request.user.last_name}}</h3>
+            <h5 class="main-heading">({{request.user.profile.user_type}})</h5>
         </div>
 
-        <p>A complete set of text tools is now at your fingertips.
-            <br>
-            Check grammar, summarize an article, run a spell checker or chat with a language
-            expert.
-        </p>
+        <div class="m-5 mb-0 p-2 row">
+            <div class="col-sm-3"><i class="fas fa-user-circle fa-10x text-primary-darker"></i></div>
+            <div class="col-sm-8">
+                <div class="card bg-primary-darker text-light text-start">
+                    <div class="card-body">
+                        <table class="table table-sm text-light">
+                            <tbody>
+                                <tr>
+                                    <th scope="row">Name</th>
+                                    <td>{{request.user.first_name}} {{request.user.last_name}}</td>
+                                </tr>
+                                <tr>
+                                    <th scope="row">Username</th>
+                                    <td>{{request.user.username}}</td>
+                                </tr>
+                                <tr>
+                                    <th scope="row">Email address</th>
+                                    <td>{{request.user.email}}</td>
+                                </tr>
+                                <tr>
+                                    <th scope="row">Type of user</th>
+                                    <td>{{request.user.profile.user_type}}</td>
+                                </tr>
+                                {% if request.user.profile.user_type == "Normal user" %}
+                                {% if request.user.premiumuser.paid == "Yes" %}
+                                <tr>
+                                    <th scope="row">Premium user?</th>
+                                    <td><i class="fas fa-star"></i> Yes <i class="fas fa-star"></i></td>
+                                </tr>
+                                {% else %}
+                                <tr>
+                                    <th scope="row">Want to get premium?</th>
+                                    <td>
+                                        <div class="card m-auto p-2 text-dark">
+                                            <form action="" method="post">
+                                                {% csrf_token %} 
+                                                {{premium_form.as_p}}
+                                                <button class="w-100 btn btn-primary" type="submit">Pay</button>
+                                            </form>  
+                                        </div>
+                                    </td>
+                                </tr>
+                                {% endif %}
+                                {% endif %}
+                                
+                                
 
-        <!-- features -->
-        <div class="box-center">
-            <div class="row mt-5 g-5 w-75">
-                <div class="col-sm-6">
-                    <div class="card">
-                        <div class="card-body">
-                            <!-- <h5 class="card-title"></h5> -->
-                            <i class="fas fa-spell-check fa-6x text-primary-darker"></i>
-                            <p class="card-text p-3">Spelling Correction
-                            </p>
-                            <a href="#" class="btn btn-primary">Start using</a>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-sm-6">
-                    <div class="card">
-                        <div class="card-body">
-                            <i class="far fa-check-circle fa-6x text-primary-darker"></i>
-                            <p class="card-text p-3">Grammar Correction
-                            </p>
-                            <a href="grammarcheck.html" class="btn btn-primary">Start using</a>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="col-sm-6">
-                    <div class="card">
-                        <div class="card-body">
-                            <!-- <h5 class="card-title">Special title treatment</h5> -->
-                            <i class="fas fa-tasks fa-6x text-primary-darker"></i>
-                            <p class="card-text p-3">Text summarizer
-                            </p>
-                            <a href="#" class="btn btn-primary">Start using</a>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-sm-6">
-                    <div class="card">
-                        <div class="card-body">
-                            <i class="fas fa-user-edit fa-6x text-primary-darker"></i>
-                            <!-- <h5 class="card-title">Special title treatment</h5> -->
-                            <p class="card-text p-3">Expert review
-                            </p>
-                            <a href="#" class="btn btn-primary">Start using</a>
-                        </div>
+                                {% comment %} <tr>
+                                    <th scope="row">Language experts in</th>
+                                    <td>Hindi, English</td>
+                                </tr>
+                                <tr>
+                                    <th scope="row">Reviews till date</th>
+                                    <td>{{request.user.profile.user_type}}</td>
+                                </tr>
+                                <tr>
+                                    <th scope="row">Certifications</th>
+                                    <td>TOFEL, IELTS</td>
+                                </tr> {% endcomment %}
+                            </tbody>
+                        </table>
                     </div>
                 </div>
             </div>
+
+            
         </div>
+
     </span>
 
 {% endblock mainbody %}

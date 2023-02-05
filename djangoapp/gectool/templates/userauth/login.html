@@ -10,20 +10,31 @@
             <h5 class="p-2 text-center">Login</h5>
 
             {% csrf_token %}
-            {% comment %} {{form}} {% endcomment %}
-            {% for f in form %}
+            {% comment %} {% for f in form %}
                 {{f.label}}
                 {{f}}
                 {% if f.help_text %}
                     <br>
                     {{f.help_text}}
                 {% endif %}
-                {% if f.error_messages %}
-                    {% for e in f.error_messages %}
-                        <li><small class="text-danger">{{e}}</small></li>
+                {% if f.errors %}
+                    {% for e in f.errors %}
+                        <small class="text-danger">{{e}}</small>
                     {% endfor %}
                 {% endif %}
                 <br><br>
+            {% endfor %} {% endcomment %}
+
+            {% for f in form %}
+                {{f.label}}
+                {{f}}
+                {% if f.errors %}
+                    {{f.errors}}
+                    {% for e in f.errors %}
+                        <small class="text-danger fst-italic"><li>{{e}}</li></small>
+                    {% endfor %}
+                {% endif %}
+                <p></p>
             {% endfor %}
 
             {% comment %} <!-- Email input -->

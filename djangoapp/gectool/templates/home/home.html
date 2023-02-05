@@ -6,16 +6,55 @@
 {% block mainbody %}
 
     <div class="text-center">
-        <!-- <h1></h1>
-        <h2>home</h2> -->
+
+        {% if user.is_authenticated and request.user.profile.user_type == "Expert user" %}
+
+        {% else %}
+
+        {% endif %}
 
         <div class="mb-5 ">
             <h2 class="fw-bolder main-heading">Bilingual Grammar Error Correction (GEC) Tool</h2>
             <h3 class="main-heading">for both Hindi and English</h3>
         </div>
 
-        <p class="fs-5 pb-4">Use GEC's deep learning-powered writing tool to craft passages <br> that are compelling,
-            concise, and error-free.</p>
+        <p class="fs-5 pb-4">Use GEC's deep learning-powered writing tool to craft passages <br> that are compelling, concise, and error-free.</p>
+
+        {% if user.is_authenticated and request.user.profile.user_type == "Expert user" %}
+
+        <div class="card m-5 p-4 bg-primary-darker text-light text-start">
+            <div class="card-body">
+                <p class="small">gec.dL premium</p>
+                <div class="row">
+                    <div class="col-8">
+                        <h3 class="card-title fw-bolder">Enhance their writing with us!</h3>
+                        <p class="card-text">With you as our experts, you can let your creativity flow and improve their
+                            style <br>and <br>EARN WITH US!</p>
+                    </div>
+                    <div class="col-4 text-end">
+                        <button type="button" class="btn btn-lg btn-secondary fw-bold p-4">Start reviewing now! <i class=" fas fa-arrow-right fa-lg"></i></button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <div class="mt-5 pt-5 w-75 m-auto">
+            <h3 class="fw-bold main-heading mb-3">Brilliant Writing Awaits</h3>
+
+            <p class="fs-5 pb-4">Start reviewing now!</p>
+
+            <div class="card col-sm-4 m-auto">
+                <div class="card-body">
+                    <i class="fas fa-user-edit fa-5x text-primary-darker"></i>
+                    <p class="card-text p-3">Expert review
+                    </p>
+                    <a href="#" class="btn btn-secondary">Start earning</a>
+                </div>
+            </div>
+        </div>
+
+        {% else %}
 
         <div class="card m-5 p-4 bg-primary-darker text-light text-start">
             <div class="card-body">
@@ -33,7 +72,6 @@
 
             </div>
         </div>
-
 
         <div class="mt-5 pt-5 w-75 m-auto">
             <h3 class="fw-bold main-heading mb-5">What we offer?</h3>
@@ -69,7 +107,6 @@
                     <div class="col-sm-6">
                         <div class="card">
                             <div class="card-body">
-                                <!-- <h5 class="card-title">Special title treatment</h5> -->
                                 <i class="fas fa-tasks fa-4x text-primary-darker"></i>
                                 <p class="card-text p-3">Text summarizer
                                 </p>
@@ -78,14 +115,23 @@
                         </div>
                     </div>
                     <div class="col-sm-6">
-                        <div class="card">
+                        <div class="card bg-primary-darker">
                             <div class="card-body">
-                                <i class="fas fa-user-edit fa-4x text-primary-darker"></i>
-                                <!-- <h5 class="card-title">Special title treatment</h5> -->
-                                <p class="card-text p-3">Expert review
+                                <i class="fas fa-user-edit fa-4x text-light"></i>
+                                <p class="card-text p-3 text-light">Expert review
                                 </p>
-                                <a href="#" class="btn btn-secondary">Start using</a>
+                                {% comment %} only for paid users {% endcomment %}
+                                {% if user.is_authenticated and request.user.premiumuser.paid == "Yes" %}
+                                <a href="{% url 'chat' %}" class="btn btn-secondary">Start using</a>
+                                {% else %}
+                                <a href="" class="btn btn-secondary">Start using</a>
+                                {% endif %}
                             </div>
+                            {% comment %} badge for paid {% endcomment %}
+                            <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill badge-danger">
+                                <i class="fas fa-star"></i>  Premium <br> feature
+                                <span class="visually-hidden">premium feature</span>
+                              </span>
                         </div>
                     </div>
                 </div>
@@ -103,10 +149,10 @@
             <button class="mt-3 p-4 w-50 btn-lg btn btn-primary fs-6"><span class="fw-bolder fs-4">Get gec.dL </span>&nbsp;&nbsp;&nbsp; it's free</button>
 
         </div>
+        
+        {% endif %}
 
-
-
-
+    
     </div>
 
 {% endblock mainbody %}

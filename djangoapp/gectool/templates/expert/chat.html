@@ -1,0 +1,105 @@
+{% extends 'base.html' %}
+
+{% block title %}| Home
+{% endblock title %}
+
+{% block mainbody %}
+
+    <div class="text-center">
+
+        {% comment %} {% if user.is_authenticated and request.user.profile.user_type == "Expert user" %}
+
+        {% else %}
+
+        {% endif %} {% endcomment %}
+
+        <div class="mb-3">
+            <h3 class="fw-bold main-heading">Expert review</h3>
+        </div>
+
+        <div class="m-5 mt-0 p-5 pt-2 row">
+            <div class="card col-3 border shadow-0">
+                <small class="text-start p-3">
+                    <!-- list of all chats -->
+                    <table class="table table-sm text-dark w-100">
+                        <tbody>
+                            <tr>
+                                <th scope="row"><a href="">normal_user</a></th>
+                            </tr>
+                            <tr>
+                                <th scope="row"><a href="">another_normal_user</a></th>
+                            </tr>
+                        </tbody>
+                    </table>
+                </small>
+            </div>
+            <div class="card col-9 border shadow-0">
+                <small class="text-start p-3">
+                    <!-- chat area -->
+                    <table class="chatbox w-100">
+                        <tbody>
+                            <tr>
+                                <td>
+                                    <p class="msg-send ">MESSAGE SEND Lorem ipsum dolor sit amet consectetur adipisicing
+                                        <br>
+                                        <span class="small text-muted">11:01 PM</span>
+                                    </p>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <p class="msg-send ">MESSAGE SEND Lorem ipsum dolor sit amet consectetur adipisicing
+                                        <br>
+                                        <span class="small text-muted">11:01 PM</span>
+                                    </p>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <p class="msg-recieved">Lorem ipsum dolor sit amet consectetur s atque vero?
+                                        <br><span class="small text-secondary">11:01 PM</span>
+                                    </p>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <p class="msg-send ">MESSAGE SEND Lorem ipsum dolor sit amet consectetur adipisicing
+                                        <br>
+                                        <span class="small text-muted">11:01 PM</span>
+                                    </p>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <p class="msg-recieved">Lorem ipsum dolor sit amet consectetur s atque vero?
+                                        <br><span class="small text-secondary">11:01 PM</span>
+                                    </p>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <p class="msg-recieved">Lorem ipsum dolor sit amet consectetur s atque vero?
+                                        <br><span class="small text-secondary">11:01 PM</span>
+                                    </p>
+                                </td>
+                            </tr>
+
+                            <tr id="chat-type-box">
+                                <td>
+                                    <form action="" method="post">
+                                        <input class="w-75" type="text">
+                                        <button class="bg-secondary" style="width: 24.5%;" type="submit">SEND</button>
+                                    </form>
+                                </td>
+                            </tr>
+
+                        </tbody>
+                    </table>
+                </small>
+            </div>
+        </div>
+
+    
+    </div>
+
+{% endblock mainbody %}
