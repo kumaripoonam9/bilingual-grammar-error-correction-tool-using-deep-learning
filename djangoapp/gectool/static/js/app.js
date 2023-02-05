@@ -123,7 +123,7 @@ function createDownloadLink(blob) {
     var li = document.createElement('span');
     var link = document.createElement('a');
 
-    //name of .wav file to use during upload and download (without extendion)
+    //name of .wav file to use during upload and download (without extension)
     // var filename = new Date().toISOString();
     var filename = "gec_speech_record";
 
@@ -146,25 +146,57 @@ function createDownloadLink(blob) {
     li.appendChild(link);
 
     //upload link
-    // var upload = document.createElement('a');
-    // upload.href = "#";
-    // upload.innerHTML = "Upload";
-    // upload.addEventListener("click", function (event) {
-    //     var xhr = new XMLHttpRequest();
-    //     xhr.onload = function (e) {
-    //         if (this.readyState === 4) {
-    //             console.log("Server returned: ", e.target.responseText);
-    //         }
-    //     };
-    //     var fd = new FormData();
-    //     fd.append("audio_data", blob, filename);
-    //     xhr.open("POST", "upload.php", true);
-    //     xhr.send(fd);
-    // })
+    var upload = document.createElement('a');
+    // upload.href = "djangoapp/gectool/spellcheck/audio";
+    // upload.href = "href='{% url spellcheck/views %}' "; 
+    upload.innerHTML = "<br><small>Upload<small>";
+
+    li.appendChild(upload) // add the upload link to li
+
+    upload.addEventListener("click", function (event) {
+        var xhr = new XMLHttpRequest();
+        xhr.onload = function (e) {
+            if (this.readyState === 4) {
+                console.log("Server returned: ", e.target.responseText);
+            }
+        };
+        var fd = new FormData();
+
+        // console.log(blob); 
+        fd.append("audio_data", blob, filename);
+        // console.log(fd);   
+        xhr.open("POST", "views", true);  
+        xhr.send(fd);
+
+        
+    })
     // li.appendChild(document.createTextNode(" "))//add a space in between
-    // li.appendChild(upload)//add the upload link to li
 
     //add the li element to the ol
     recordingsList.innerHTML = "";
     recordingsList.appendChild(li);
 }
+
+// function uploadAudioFile() {
+//     var filename = new Date().toISOString();
+//     //filename to send to server without extension 
+//     //upload link 
+//     var upload = document.createElement('a');
+//     upload.href = "#";
+//     upload.innerHTML = "Upload";
+//     upload.addEventListener("click", function(event) {
+//         var xhr = new XMLHttpRequest();
+//         xhr.onload = function(e) {
+//             if (this.readyState === 4) {
+//                 console.log("Server returned: ", e.target.responseText);
+//             }
+//         };
+//         var fd = new FormData();
+//         fd.append("audio_data", blob, filename);
+//         xhr.open("POST", "upload.py", true);
+//         xhr.send(fd);
+//     })
+//     li.appendChild(document.createTextNode(" ")) //add a space in between 
+//     li.appendChild(upload) //add the upload link to li
+
+// }

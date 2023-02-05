@@ -3,7 +3,7 @@
 ### Tasks: django
 - [x] grammar check
 - [ ] spell check
-- [ ] summarixer
+- [ ] summarizer
 - [ ] expert review
 - [ ] user auth
 - [ ] bulk upload

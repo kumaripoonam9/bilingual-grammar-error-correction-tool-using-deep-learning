@@ -1,3 +1,4 @@
+from django.http import HttpResponse
 from django.shortcuts import render
 from .eng_spellcheck import correct_spelling
 from .hi_spellcheck import hi_spellcheck
@@ -83,7 +84,7 @@ def spellcheck(request):
             if file_form.is_valid():
                 ext = handle_uploaded_file(request.FILES['file'])
                 filename = './static/upload/file.'+ext
-                # checkiing extensions
+                # checking extensions
                 if ext=='txt':
                     text_to_check = txtToText(filename)
                 elif ext=='docx':
@@ -131,3 +132,32 @@ def pdf(request):
     }
     # print(context)
     return render(request, "home/generatepdf.html", context)
+
+import os, time, json
+from django.views.decorators.csrf import csrf_exempt
+
+@csrf_exempt
+def upload_driver(request):
+    upload_file = request.FILES['audio_data']
+    # print(upload_file) 
+    ret = {} 
+    if upload_file:
+        target_folder = r"C:\\Users\\devan_s1ts7c0\\OneDrive\\Desktop\\bilingual-grammar-error-correction-tool-using-deep-learning\\djangoapp\\gectool\\spellcheck\\audio"
+        # if not os.path.exists(target_folder): os.mkdir(target_folder)
+        rtime = str(int(time.time()))
+        # filename = request.POST['filename']
+        filename = request.POST.get('filename', False)
+        blob = request.POST.get('blob', False)
+        # print(blob) 
+        # filename = "gec_speech_record.wav"
+        # target = os.path.join(target_folder, filename)
+        target = os.path.join(target_folder, "gec_speech_record.wav")
+        with open(target, 'wb+') as dest:
+          for c in upload_file.chunks():
+            dest.write(c)
+        ret['file_remote_path'] = target
+    else:
+        return HttpResponse(status=500)
+    
+    # return HttpResponse(json.dumps(ret), mimetype = "application/json")
+    return render(request, "spellcheck/spellcheck.html")

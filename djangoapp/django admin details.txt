@@ -1,8 +1,8 @@
 virtaul env: env
 
 GEC TOOL Superuser
-username	:	kumaripoonam
-email	:	kumari.p@somaiya.edu
+username	:	admin
+email	:	devanshi.mp@somaiya.edu
 password	:	2q9sjo20	
 
 
