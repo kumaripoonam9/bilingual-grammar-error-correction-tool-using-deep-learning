@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load static %}
 
 {% block title %}| Text summarizer
 {% endblock title %}
@@ -10,73 +11,222 @@
             <h3 class="main-heading">for both Hindi and English</h3>
         </div>
 
-        <p>Select language in which you want to summarize your text:
-        </p>
-        <div class="fs-4">
-            <div class="form-check form-check-inline">
-                <input
-                    class="form-check-input"
-                    type="radio"
-                    name="inlineRadioOptions"
-                    id="inlineRadio1"
-                    value="eng"/>
-                <label class="form-check-label" for="inlineRadio1">English</label>
-            </div>
 
-            <div class="form-check form-check-inline">
-                <input
-                    class="form-check-input"
-                    type="radio"
-                    name="inlineRadioOptions"
-                    id="inlineRadio2"
-                    value="hi"/>
-                <label class="form-check-label" for="inlineRadio2">Hindi</label>
-            </div>
-        </div>
 
-        <!-- form -->
-        <div class="box-center row">
+        {% comment %} type in form {% endcomment %}
+        <div class="box-center row mb-4">
 
-            <form method="post" class="bg-white p-5 m-5 rounded-5 col-8 shadow-3">
+            <form method="post" name="textarea_form" class="">
                 {% csrf_token %}
-                <!-- Message input -->
-                <div class="form-outline mb-4">
-                    <textarea
-                        class="form-control"
-                        id="text_to_check"
-                        name="text_to_check"
-                        rows="10"
-                        maxlength="500"
-                        required></textarea>
-                    <label class="form-label" for="text_to_check">Enter text here</label>
-                </div>
 
-                <!-- Submit button -->
-                <button type="submit" class="btn btn-primary btn-block mb-4">Summarize text</button>
+                {% comment %} language {% endcomment %}
+                <p>Select language in which you want to summarize your text:</p>
+                <div class="mb-3">
+                    <div class="form-check form-check-inline">
+                        <input
+                            {% comment %} required {% endcomment %}
+                            class="form-check-input-lg"
+                            type="radio"
+                            name="lang_by_user"
+                            id="en"
+                            value="en" 
+                            checked />
+                        <label class="form-check-label" for="eng" >English</label>
+                    </div>
+        
+                    <div class="form-check form-check-inline">
+                        <input
+                            {% comment %} required {% endcomment %}
+                            class="form-check-input-lg"
+                            type="radio"
+                            name="lang_by_user"
+                            id="hi"
+                            value="hi"/>
+                        <label class="form-check-label" for="hi">Hindi</label>
+                    </div>
+                </div>
+                <div class="m-auto bg-white p-5 pb-4 rounded-5 col-8 shadow-3">
+                    
+                    <!-- Message input -->
+                    <div class="form-outline mb-4">
+                        <textarea
+                            class="form-control"
+                            id="text_to_check"
+                            name="text_to_check"
+                            rows="10"
+                            maxlength="10000"
+                            ></textarea>
+                        <label class="form-label" for="text_to_check">Enter text here</label>
+                    </div>
+
+                    <!-- Submit button -->
+                    <button name="textarea_form_button" type="submit" class="btn btn-primary btn-block mb-4">Summarize</button>
+                </div>
             </form>
 
-            {% if corrected_text != '' %}
+            {% comment %} lang detection error {% endcomment %}
+            {% if error == 1 %}
+            <p class="card-text pb-4 class text-center fixed-bottom alert alert-danger m-3 col-3" id="error_text">
+                <b>Error:</b><br>
+                Language from input and language selected by user don't match!
+            </p>
+            {% endif %}
 
-            <div class="card text-center col-9">
+        </div>
+
+        <p class="or">OR</p>
+
+        <div class="box-center row mb-4">
+            {% comment %} audio form {% endcomment %}
+            <form method="post" name="audio_form" action="">
+                {% csrf_token %}
+                {% comment %} language {% endcomment %}
+                <p class="">Select language in which you want to summarize your text:</p>
+                <div class="mb-3">
+                    <div class="form-check form-check-inline">
+                        <input
+                            {% comment %} required {% endcomment %}
+                            class="form-check-input-lg"
+                            type="radio"
+                            name="lang_by_user"
+                            id="en"
+                            value="en" 
+                            checked />
+                        <label class="form-check-label" for="eng" >English</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input
+                            {% comment %} required {% endcomment %}
+                            class="form-check-input-lg"
+                            type="radio"
+                            name="lang_by_user"
+                            id="hi"
+                            value="hi"/>
+                        <label class="form-check-label" for="hi">Hindi</label>
+                    </div>
+                </div>
+                <div class="m-auto bg-white p-5 pb-4 rounded-5 col-8 shadow-3">
+                    {% comment %} audio input {% endcomment %}
+                    <div class="" id="controls">
+                        <h6 class="main-heading pb-2">Speak here to get results:</h6>
+                        <!-- start -->
+                        <button id="recordButton" class="btn-mic btn btn-secondary btn-lg mb-4">
+                            <i class="fas fa-3x fa-microphone"></i>
+                            Start
+                        </button>
+                        <!-- pause : hidden bcuz not working !!!-->
+                        <button id="pauseButton" class="d-none btn-mic btn btn-secondary btn-lg mb-4" disabled >
+                            <i class="fas fa-3x fa-pause"></i>
+                            pause
+                        </button>
+                        <!-- stop -->
+                        <button id="stopButton" class="btn-mic btn btn-secondary btn-lg mb-4" disabled>
+                            <i class="fas fa-3x fa-microphone-slash"></i>
+                            stop
+                        </button>
+                    </div>
+
+                    <div id="recordingsList"></div>
+                    <!-- inserting these scripts at the end to be able to use all the elements in the DOM -->
+                    <script src="{% static 'js/recorder.js' %}"></script>
+                    <script src="{% static 'js/app.js' %}"></script>
+
+                    <!-- Submit button -->
+                    <button name="audio_form_button" type="submit" class="btn btn-primary btn-block mb-4">Summarize</button>
+                </div>
+            </form>
+
+            {% comment %} lang detection error {% endcomment %}
+            {% if error == 1 %}
+            <p class="card-text pb-4 class text-center fixed-bottom alert alert-danger m-3 col-3" id="error_text">
+                <b>Error:</b><br>
+                Language from input and language selected by user don't match!
+            </p>
+            {% endif %}
+        </div>
+        
+        <p class="or">OR</p>
+
+        {% comment %} file form {% endcomment %}
+        <div class="box-center row mb-4">
+            <form method="post" name="file_form" class="" enctype="multipart/form-data">
+                {% csrf_token %}
+                {% comment %} language {% endcomment %}
+                <p class="">Select language in which you want to summarize your text:</p>
+                <div class="mb-3">
+                    <div class="form-check form-check-inline">
+                        <input
+                            {% comment %} required {% endcomment %}
+                            class="form-check-input-lg"
+                            type="radio"
+                            name="lang_by_user"
+                            id="en"
+                            value="en" 
+                            checked />
+                        <label class="form-check-label" for="eng" >English</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input
+                            {% comment %} required {% endcomment %}
+                            class="form-check-input-lg"
+                            type="radio"
+                            name="lang_by_user"
+                            id="hi"
+                            value="hi"/>
+                        <label class="form-check-label" for="hi">Hindi</label>
+                    </div>
+                </div>
+                <div class="m-auto bg-white p-5 pb-4 rounded-5 col-8 shadow-3">
+                    {% comment %} file uploads {% endcomment %}
+                    <div class="mb-5">
+                        <h6 class="main-heading pb-2">Upload your file here:</h6>
+                        <p class="small">Note: Kindly ensure the uploaded file is in either .doc, .docx, .pdf, .txt formats</p>
+                        {% for inp in file_form %}{{inp}}{% endfor %}
+                    </div>
+
+                    <!-- Submit button -->
+                    <button name="file_form_button" type="submit" class="btn btn-primary btn-block mb-4">Summarize</button>
+                </div>
+            </form>
+
+            {% comment %} lang detection error {% endcomment %}
+            {% if error == 1 %}
+            <p class="card-text pb-4 class text-center fixed-bottom alert alert-danger m-3 col-3" id="error_text">
+                <b>Error:</b><br>
+                Language from input and language selected by user don't match!
+            </p>
+            {% endif %}
+        </div>
+
+
+        <div class="box-center row">
+            {% comment %} corrected output {% endcomment %}
+            {% if summary != '' %}
+            <div class="card text-center mt-5 col-9">
                 <div class="card-header">
                     <ul class="nav nav-pills card-header-tabs">
                         <li class="nav-item">
-                            <button class="nav-link active btn btn-secondary" aria-current="true"
-                                onclick="copyText()">Copy text</button>
+                               <button class="nav-link active btn btn-secondary" aria-current="true"
+                               autofocus 
+                               onclick="copyText()">Copy text</button>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link active" href="#!">Download</a>
+                            <a href="{% url 'result/pdf' %}">
+                                <button class="nav-link active btn btn-secondary" aria-current="true"
+                                onclick="">Download</button>
+                            </a>
                         </li>
                     </ul>
                 </div>
                 <div class="card-body">
-                    <h5 class="card-title pb-3">Summarized Textual Output</h5>
-                    <p class="card-text pb-4" id="result_text">{{corrected_text}}</p>
+                    <h5 class="card-title pb-3">Summary</h5>
+                    <p class="text-start card-text pb-4" id="result_text">{{ summary|linebreaksbr }}</p>
                 </div>
             </div>
-                
             {% endif %}
         </div>
+
+
     </span>
 
     <script>

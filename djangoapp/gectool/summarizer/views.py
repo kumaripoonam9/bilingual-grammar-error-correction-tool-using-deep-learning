@@ -1,15 +1,149 @@
 from django.shortcuts import render
-# from .grammarcheck import correct_grammar
+from django.http import HttpResponse
 from django.contrib.auth.decorators import login_required
-# Create your views here.
+from django.views.decorators.csrf import csrf_exempt
+
+from langdetect import detect
+import aspose.words as aw
+import os, time
+
+from spellcheck.forms import FileUploadForm
+from spellcheck.functions import handle_uploaded_file, txtToText, docxToText, pdfToText, parse_transcription, parse_transcription_eng
+
+from .summarizer_eng import eng_summary
+from .summarizer_hi import hi_summary
+
+
 
 @login_required(login_url='login')
 def summarizer(request):
-    corrected_text = ""
+
+    summary = ""
+    error = 0
+    sentence = 1
+    text = ""
     
-    # if request.method=="POST":
-    #     text_to_check = request.POST.get('text_to_check')
-    #     corrected_text = correct_grammar(text_to_check, 1)
-    #     corrected_text = corrected_text[0]
+    if request.method=="POST":
+
+        lang_by_user = request.POST.get('lang_by_user')
+
+        if 'textarea_form_button' in request.POST:
+
+            text = request.POST.get('text_to_check')
+            text = text.replace("\n"," ")
+            text = text.replace("\r","")
+            
+            # print(text)
+
+            lang_detected = detect(text)
+            print(lang_detected)
+            lang_detected = lang_detected.split(" ")[0]
+
+            # text = text.split(".")
+
+            if lang_by_user=="en" and lang_detected!=lang_by_user or lang_by_user=="hi" and lang_detected=="en":
+                error = 1
+            else:
+                if lang_by_user=="en":
+                    summary = eng_summary(text)
+                    # print(type(summary), summary)
+                else:
+                    summary = hi_summary(text)
+                    # print(type(summary), summary)
+
+            # creating forms for audio and file upload
+            file_form = FileUploadForm()
+        
+        elif 'file_form_button' in request.POST:
+
+            file_form = FileUploadForm(request.POST, request.FILES)
+            if file_form.is_valid():
+                ext = handle_uploaded_file(request.FILES['file'])
+                filename = './static/upload/file.'+ext
+                # checkiing extensions
+                if ext=='txt':
+                    text = txtToText(filename)
+                elif ext=='docx':
+                    text = docxToText(filename)
+                elif ext=='doc':
+                    doc = aw.Document(filename)
+                    filename = './static/upload/file.docx'
+                    doc.save(filename)
+                    text = docxToText(filename)
+                elif ext=='pdf':
+                    text = pdfToText(filename)
+
+                lang_detected = detect(text)
+                lang_detected = lang_detected.split(" ")[0]
+
+                # print(text)
+                text = text.split("\n")
+                text = list(filter(None, text))
+                # print(text)
+                if lang_by_user=="en":
+                    for t in text:
+                        if not t.isspace():
+                            t = t.split(".")
+                            for x in t:
+                                if not x.isspace():
+                                    ct = correct_grammar_eng(x.strip(), 1)[0]
+                                    summary += ct
+                                    summary += " "
+                        summary = summary + "\n"
+                    print(summary)
+                else:
+                    summary = "hindi model not implemented"
+               
+                print(summary)
+
+        elif 'audio_form_button' in request.POST:
+            lang_by_user = request.POST.get('lang_by_user')
+            filepath = 'summarizer/audio/gec_speech_record.wav'
+
+            if lang_by_user=="hi":
+                text = parse_transcription(filepath)
+                summary = text
+            else:
+                text = parse_transcription_eng(filepath)
+                summary = eng_summary(text)
+            
+            os.remove(filepath)
+
+            # creating file form
+            file_form = FileUploadForm()
+
+        request.session['corrected_text'] = summary
+        request.session['toolname'] = "Text Summary"
+
+    else:
+        file_form = FileUploadForm()
+
+    return render(request, "summarizer/summarizer.html", {"summary": summary, 
+    "sentence":sentence, 
+    "error":error,
+    "file_form": file_form})
+
+
+
+# audio upload to server
+@csrf_exempt
+def upload_driver(request):
+    upload_file = request.FILES['audio_data']
+    ret = {} 
+    if upload_file:
+        target_folder = 'summarizer/audio/gec_speech_record.wav'
+
+        rtime = str(int(time.time()))
+
+        filename = request.POST.get('filename', False)
+        blob = request.POST.get('blob', False)
+
+        with open(target_folder, 'wb+') as dest:
+            for c in upload_file.chunks():
+                dest.write(c)
+        ret['file_remote_path'] = target_folder
+    else:
+        return HttpResponse(status=500)
     
-    return render(request, "summarizer/summarizer.html", {"corrected_text": corrected_text})
+    # return HttpResponse(json.dumps(ret), mimetype = "application/json")
+    return render(request, "summarizer/summarizer.html")

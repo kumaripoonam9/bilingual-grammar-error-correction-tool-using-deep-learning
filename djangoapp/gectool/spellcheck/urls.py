@@ -3,5 +3,8 @@ from . import views
 
 urlpatterns = [
     path('', views.spellcheck, name='spellcheck'),
-    path('pdf', views.pdf, name='spellcheck/pdf')
+
+    path('../result/pdf', views.pdf, name='result/pdf'),
+
+    path('views', views.upload_driver, name="spellcheck/views")
 ]

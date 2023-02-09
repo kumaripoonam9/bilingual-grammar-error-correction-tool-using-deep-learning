@@ -23,9 +23,12 @@
                     <!-- list of all chats -->
                     <table class="table table-sm text-dark w-100">
                         <tbody>
+                            {% for u in users %} 
+                            {% comment %} {% if not u. == 1 and not u.id == user.id %} {% endcomment %}
                             <tr>
-                                <th scope="row"><a href="">normal_user</a></th>
+                                <th scope="row"><a href="">{{u.username}}</a></th>
                             </tr>
+                            {% endfor %}
                             <tr>
                                 <th scope="row"><a href="">another_normal_user</a></th>
                             </tr>
