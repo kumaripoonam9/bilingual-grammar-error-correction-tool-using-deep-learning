@@ -1,11 +1,8 @@
 virtaul env: env
 
 GEC TOOL Superuser
-username	:	kumaripoonam
-email	:	kumari.p@somaiya.edu
-password	:	2q9sjo20	
-
-
+username	:	admin
+password	:	admin
 
 python -m pip install -U langdetect
 
