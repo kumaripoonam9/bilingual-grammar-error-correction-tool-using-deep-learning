@@ -97,24 +97,27 @@ form.django-form input {
 
 /*---------------------- expert chat box ---------------------*/
 
-p.msg-send {
-    background-color: #deeaff;
+p.msg-send,
+p.msg-recieved {
     padding: .6rem 1rem;
     max-width: 60%;
-    color: black;
     border-radius: .5rem;
+    margin-bottom: .4rem;
+}
+
+
+p.msg-send {
+    background-color: #deeaff;
+    color: black;
     float: right;
 }
 
 p.msg-recieved {
     background-color: #1e4178;
-    padding: .6rem 1rem;
-    max-width: 60%;
     color: aliceblue;
-    border-radius: .5rem;
 }
 
-tr#chat-type-box td {
+/* tr#chat-type-box td {
     background-color: #243552;
     border-radius: .5rem;
     padding: .3rem .4rem;
@@ -128,4 +131,4 @@ tr#chat-type-box form button {
     border: none;
     border-radius: .2rem;
     height: 3rem;
-}
+} */

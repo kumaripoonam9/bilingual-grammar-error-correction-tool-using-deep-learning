@@ -1,0 +1,92 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}| Chat
+{% endblock title %}
+
+{% block mainbody %}
+
+    <div class="text-center">
+
+        {% comment %} {% if user.is_authenticated and request.user.profile.user_type == "Expert user" %}
+
+        {% else %}
+
+        {% endif %} {% endcomment %}
+
+        {% comment %} <div class="mb-3">
+            <h3 class="fw-bold main-heading">Expert review</h3>
+        </div> {% endcomment %}
+
+        <div class="m-lg-5 mt-0 p-lg-5 pt-md-2 row">
+            <!-- list of all chats -->
+            <div class="card col-md-3 border shadow-0">
+                <small class="text-start p-3">                    
+                    <table class="table table-sm text-dark w-100">
+                        <tbody>
+                            {% for user in users %} 
+                            <tr>
+                                <th scope="row"><a href="{% url 'chat' username=user.username %}"><i class="fas fa-user-circle"></i>&nbsp; {{user.username}} </a></th>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </small>
+            </div>
+            <div class="card col-md-9 border shadow-0">
+                <small class="text-start p-3">
+                    <!-- chat area -->
+                    <table class="chatbox w-100">
+                        <tbody id="chat-body">
+                            {% if user.username != request.user.username %}
+                            <tr>
+                                {% comment %} chat user name {% endcomment %}
+                                <th scope="row" class="position-sticky"><a href=""><i class="fas fa-user-circle"></i>&nbsp;{{user.username}}</a><hr>
+                                </th>
+                            </tr>
+                            {% endif %} 
+                            
+                            {% comment %} <span id="chat-body"></span> {% endcomment %}
+                            
+
+                            {% comment %} <tr>
+                                <td>
+                                    <p class="msg-send ">
+                                        {{message.message}}
+                                        <br>
+                                        <span class="small text-secondary">27 Jun 2023</span>
+                                    </p>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <p class="msg-recieved">msg-recieved
+                                        <br><span class="small text-secondary">11:01 PM,</span> <span class="small text-secondary">27 Jun 2023</span>
+                                    </p>
+                                </td>
+                            </tr> {% endcomment %}
+
+                            <tr>
+                                <td class="position-sticky">
+                                    <div class="input-group mt-3">
+                                        <div class="form-outline">
+                                            <input type="text" id="message-input" class="form-control" />
+                                            <label class="form-label" for="message-input">Type message here</label>
+                                        </div>
+                                        <button type="submit" id="chat-message-submit" class="btn btn-dark bg-primary-darker">send</button>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </small>
+            </div>
+        </div>
+    </div>
+
+    {{user.id|json_script:'json-username'}}
+    {{request.user.username|json_script:'json-message-username'}}
+
+    <script src="{% static 'js/messages.js' %}"></script>
+
+{% endblock mainbody %}

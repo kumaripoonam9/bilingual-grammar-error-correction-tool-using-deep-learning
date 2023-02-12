@@ -14,5 +14,5 @@ urlpatterns = [
     
     path('summarizer/', include('summarizer.urls')),
 
-    path('chat', include('expert.urls')),
+    path('chat/', include('chat.urls')),
 ]

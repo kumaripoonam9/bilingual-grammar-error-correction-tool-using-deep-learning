@@ -12,6 +12,8 @@ class Profile(models.Model):
     user_type = models.CharField(
         max_length=11,
         choices=USER_TYPES_CHOICES,)
+    
+    # friends = models.ManyToManyField('Friend', related_name='my_friends')
 
     def __str__(self):
         return f'{self.user.username}'
