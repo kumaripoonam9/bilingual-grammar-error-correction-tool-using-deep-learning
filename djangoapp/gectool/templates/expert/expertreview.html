@@ -1,0 +1,103 @@
+{% extends 'base.html' %}
+
+{% block title %}| Home
+{% endblock title %}
+
+{% block mainbody %}
+
+    <div class="text-center">
+
+        {% comment %} {% if user.is_authenticated and request.user.profile.user_type == "Expert user" %}
+
+        {% else %}
+
+        {% endif %} {% endcomment %}
+
+        <div class="mb-5">
+            <h2 class="fw-bolder main-heading">Expert Review</h2>
+            <h3 class="main-heading">for both Hindi and English</h3>
+        </div>
+        {% comment %} <div class="mb-3">
+            <h3 class="fw-bold main-heading">Expert review</h3>
+        </div> {% endcomment %}
+
+        <div class="m-5 mt-0 p-5 pt-2 row">
+            <div class="col-md-3">
+                <p>Enter the secret code here to start chatting</p>
+                {% comment %} chat room {% endcomment %}
+                <form method="post" class="card p-3 shadow-2">
+                    {% csrf_token %}
+                    <div class="form-outline mb-3">
+                        <input type="text" id="room" name="room" class="form-control" required />
+                        <label class="form-label" for="room">Enter secret code</label>
+                    </div>                  
+                    <button name='secret_code_button' type="submit" class="btn bg-primary-darker btn-primary btn-block">Start chat</button>
+                </form>
+            </div>
+
+            <div class="col-md-1">OR</div>
+
+            <div class="col-md-4">
+                {% if user.is_authenticated and request.user.profile.user_type == "Expert user" %}
+                <div class="card border border-primary shadow-0 mb-3" style="max-width: 18rem;">
+                    <div class="card-header">New room codes for review</div>
+                    <div class="card-body text-primary">
+                        {% if pending_rooms %}
+                        {% for r in pending_rooms %}
+                        <p class="card-text fw-bolder fs-5"><a href="{% url 'room' room_name=r %}">{{r}}</a></p>
+                        {% endfor %}
+                        {% else %}
+                        <p class="card-text">No new codes here...</p>
+                        {% endif %}
+                    </div>
+                </div>
+                {% else %}
+                <form method="post" name="expert_form" class="">
+                    {% csrf_token %}
+                    <p class="">Find a language expert</p>
+                    <div class="mb-3">
+                        <div class="form-check form-check-inline">
+                            <input
+                                class="form-check-input-lg"
+                                type="radio"
+                                name="expert_lang_requested"
+                                id="English"
+                                value="English" 
+                                checked />
+                            <label class="form-check-label" for="English" >English</label>
+                        </div>            
+                        <div class="form-check form-check-inline">
+                            <input
+                                class="form-check-input-lg"
+                                type="radio"
+                                name="expert_lang_requested"
+                                id="Hindi"
+                                value="Hindi"/>
+                            <label class="form-check-label" for="Hindi">Hindi</label>
+                        </div>
+                    </div>                     
+                    <button name="expert_lang_requested_button" type="submit" class="btn btn-primary btn-lg bg-primary-darker mb-4">Search expert</button>                   
+                </form>
+                {% endif %}                    
+            </div>
+            
+
+            <div class="col-md-1">OR</div>
+            
+            <div class="col-md-3"><p>Go to your previous expert reviews</p>
+                <a href="{% url 'chat' %}">
+                    <button name="textarea_form_button"  class="btn btn-primary btn-lg w-50 bg-primary-darker mb-4"><i
+                        class="fas fa-comment"></i> Chats </button> 
+                </a>
+            </div>
+        </div>
+
+    
+    </div>
+
+    {% if secret_code != '' %}
+    <div class='text-center fixed-bottom border border-4 border-info alert alert-info m-3 col-3'><i class="fas fa-lock"></i> Your secret code <i class="fas fa-lock"></i><a href="{% url 'room' room_name=secret_code %}"><p class="fw-bolder mb-0 fs-4">{{secret_code}}</p></a></div>
+    {% endif %}
+
+
+{% endblock mainbody %}

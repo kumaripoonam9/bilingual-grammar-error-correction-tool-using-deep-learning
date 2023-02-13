@@ -97,35 +97,110 @@ form.django-form input {
 
 /*---------------------- expert chat box ---------------------*/
 
-p.msg-send {
-    background-color: #deeaff;
+.bg-primary-darker-2 {
+    background-color: #0e2854;
+}
+
+
+/* expert */
+
+div.chat-user-name {
+    border-radius: .4rem;
+    /* background-color: #1F1D36; */
+    padding: .3rem 1rem;
+    margin: .7rem 0;
+    text-align: left;
+    border-bottom: #3f335189 2px solid;
+    /* color: #d8afcd; */
+    /* font-weight: bold; */
+}
+
+div#chatbox {
+    display: flex;
+    flex-direction: column;
+    /* align-items: flex-end; */
+}
+
+div#chatbox form {
+    width: 100%;
+}
+
+p.msg-send,
+p.msg-recieved {
     padding: .6rem 1rem;
     max-width: 60%;
-    color: black;
+    /* width: 60%; */
     border-radius: .5rem;
-    float: right;
+    /* display: table; */
+
 }
 
 p.msg-recieved {
-    background-color: #1e4178;
-    padding: .6rem 1rem;
-    max-width: 60%;
-    color: aliceblue;
-    border-radius: .5rem;
+    color: whitesmoke;
+    background-color: #333a51;
+    /* align-items: flex-start; */
+    /* float: left;
+    clear: left; */
+    /* float: left; */
+    margin-right: auto;
 }
 
-tr#chat-type-box td {
-    background-color: #243552;
-    border-radius: .5rem;
-    padding: .3rem .4rem;
-    position: sticky;
-    bottom: 1rem;
-    margin-bottom: 1rem;
+p.msg-send {
+    background-color: #e3ebf7;
+    color: black;
+    /* align-self: flex-end; */
+    margin-left: auto;
+    /* float: right;
+    clear: right; */
+    /* right: 50; */
 }
 
-tr#chat-type-box form input,
-tr#chat-type-box form button {
-    border: none;
-    border-radius: .2rem;
-    height: 3rem;
+.expert th>a {
+    text-decoration: none;
+    color: #1F1D36;
+}
+
+body.expert {
+    background-color: #e3ebf7;
+}
+
+.bg-dark-purple {
+    background-color: #1F1D36 !important;
+}
+
+.bg-lighter-purple {
+    background-color: #3F3351 !important;
+}
+
+.bg-pastel-maroon {
+    background-color: #484f8679 !important;
+}
+
+.bg-peach {
+    background-color: #E9A6A6 !important;
+}
+
+.text-dark-purple {
+    color: #1F1D36 !important;
+}
+
+.text-lighter-purple {
+    color: #3F3351 !important;
+}
+
+.text-pastel-maroon {
+    color: #864879 !important;
+}
+
+.text-peach {
+    color: #E9A6A6 !important;
+}
+
+.expert .back-buttons > div {
+    background-color: #333a51;
+    padding: 1rem;
+    height: 3.3rem;
+    /* width: 3.3rem; */
+    border-radius: 4rem;
+    color: white;
 }

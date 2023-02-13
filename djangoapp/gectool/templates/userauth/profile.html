@@ -37,6 +37,7 @@
                                     <th scope="row">Type of user</th>
                                     <td>{{request.user.profile.user_type}}</td>
                                 </tr>
+
                                 {% if request.user.profile.user_type == "Normal user" %}
                                 {% if request.user.premiumuser.paid == "Yes" %}
                                 <tr>
@@ -57,6 +58,26 @@
                                     </td>
                                 </tr>
                                 {% endif %}
+                                {% else %}
+                                {% if langauges_known %}
+                                <tr>
+                                    <th scope="row">Languages known</th>
+                                    <td>{{request.user.expertlanguage.languages_known}}</td>
+                                </tr>                                
+                                {% else %}
+                                <tr>
+                                    <th scope="row">What languages do you know?</th>
+                                    <td>
+                                        <div class="card m-auto p-2 text-dark">
+                                            <form action="" method="post">
+                                                {% csrf_token %}
+                                                {{expertlangform.as_p}}         
+                                                <button class="w-100 btn btn-primary" type="submit">Submit</button>
+                                            </form>  
+                                        </div>
+                                    </td>
+                                </tr>
+                                {% endif %}                                
                                 {% endif %}
                                 
                                 

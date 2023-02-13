@@ -6,6 +6,8 @@ from django.contrib import messages
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth.decorators import login_required
 
+from expert.forms import ExpertLanguageForm
+
 
 def login_request(request):
     if request.method == "POST":
@@ -15,10 +17,6 @@ def login_request(request):
             login(request, user)
             print(user.profile.user_type)
             return redirect('../../')
-            # if user.profile.user_type=='Normal user':
-            #     return redirect('../../')
-            # else:
-            #     return redirect('experthome')
     else:
         form = AuthenticationForm()
 
@@ -57,15 +55,52 @@ def logout_request(request):
 
 @login_required(login_url='login')
 def userprofile(request):
-    if request.method == "POST":
-        premium_form = PremiumUserForm(request.POST)
-        if premium_form.is_valid():
-            paid_user = premium_form.save(commit=False)
-            paid_user.user = request.user
-            paid_user.save()
-            return redirect('profile')
+    langauges_known = True
+
+    try:
+        request.user.expertlanguage.languages_known
+    except:
+        langauges_known = False
+        print('no langs')
+    # if request.user.expertlanguage.languages_known:
+    #     print(request.user.expertlanguage.languages_known)
+    # else:
+    #     print('nothing')
+
+    if request.user.profile.user_type == 'Expert user':
+        if request.method == "POST":
+            premium_form = PremiumUserForm()
+            expertlangform = ExpertLanguageForm(request.POST)
+            if expertlangform.is_valid():
+                expertlangs = expertlangform.save(commit=False)
+                expertlangs.user = request.user
+                expertlangs.save()
+                return redirect('profile')
+        else:
+            premium_form = PremiumUserForm()
+            expertlangform = ExpertLanguageForm()
+
     else:
-        premium_form = PremiumUserForm()
+        if request.method == "POST":
+            expertlangform = ExpertLanguageForm()
+            premium_form = PremiumUserForm(request.POST)
+            if premium_form.is_valid():
+                paid_user = premium_form.save(commit=False)
+                paid_user.user = request.user
+                paid_user.save()
+                return redirect('profile')
+        else:
+            premium_form = PremiumUserForm()
+            expertlangform = ExpertLanguageForm()
+        
+    # else:
+    #     premium_form = PremiumUserForm()
+    #     expertlangform = ExpertLanguageForm()
     
-    context = {'premium_form':premium_form}
+    context = {
+        'premium_form': premium_form, 
+        'expertlangform': expertlangform,
+        'langauges_known': langauges_known
+    }
+    # context = {'premium_form':premium_form}
     return render(request, "userauth/profile.html", context)

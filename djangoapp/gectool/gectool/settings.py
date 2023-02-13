@@ -30,6 +30,8 @@ INSTALLED_APPS = [
 
     "userauth.apps.UserauthConfig",
     "home.apps.HomeConfig",
+
+    'expert',
 ]
 
 MIDDLEWARE = [

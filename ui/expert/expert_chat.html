@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GEC Tool</title>
+    <title>GEC Tool | Chatbox</title>
     <!-- Font Awesome -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet" />
     <!-- Google Fonts -->
@@ -14,145 +14,63 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/6.0.0/mdb.min.css" rel="stylesheet" />
     <!-- custom css -->
     <link rel="stylesheet" href="style/common.css">
-    <link rel="stylesheet" href="style/expert.css">
 </head>
 
-<body class="bg-1-purple text-black">
+<body class="expert">
 
-    <!-- Navbar -->
-    <nav class="navbar navbar-expand-lg navbar-light bg-transparent shadow-0 ">
-        <div class="container p-3">
-            <!-- Navbar brand -->
-            <a class="navbar-brand me-2" href="home.html">
-                <img src="assets/images/logo.png" height="24" alt="MDB Logo" loading="lazy"
-                    style="margin-top: -1px; margin-right: 4em;" />
-            </a>
-
-            <!-- Toggle button -->
-            <button class="navbar-toggler" type="button" data-mdb-toggle="collapse"
-                data-mdb-target="#navbarButtonsExample" aria-controls="navbarButtonsExample" aria-expanded="false"
-                aria-label="Toggle navigation">
-                <i class="fas fa-bars"></i>
-            </button>
-
-            <!-- Collapsible wrapper -->
-            <div class="collapse navbar-collapse" id="navbarButtonsExample">
-                <!-- Left links -->
-                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                    <li class="nav-item">
-                        <a class="nav-link active" href="home.html">Home</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="tools.html">Tools</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="home.html#pricing">Pricing</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="help.html">Contact</a>
-                    </li>
-                </ul>
-                <!-- Left links -->
-
-                <div class="d-flex align-items-center">
-                    <a href="profile.html"><button type="button" class="btn btn-secondary px-3 me-2">Profile
-                        </button></a>
-                    <a href="register.html"> <button type="button" class="btn btn-primary  me-3" href="register.html">
-                            logout <i class="fas fa-arrow-right fa-lg"></i>
-                        </button></a>
-                </div>
-            </div>
-            <!-- Collapsible wrapper -->
+    <div class="container text-center">
+        <!-- <i class="mt-4 fas fa-arrow-left"></i> -->
+        <div class="position-relative back-buttons">
+            <button class="position-absolute top-0 start-0 btn btn-small btn-primary bg-primary-darker-2 shadow-1"><i
+                    class="fas fa-arrow-left"></i> previous page</button>
+            <!-- <div class="position-absolute top-0 start-0"><i class="fas fa-arrow-left"></i> previous page</div> -->
+            <!-- <div class="position-absolute top-0 end-0"></div>
+            <div class="position-absolute top-50 start-50"></div>
+            <div class="position-absolute bottom-50 end-50"></div>
+            <div class="position-absolute bottom-0 start-0"></div>
+            <div class="position-absolute bottom-0 end-0"></div> -->
         </div>
-    </nav>
-    <!-- Navbar -->
+        <h3 class="m-5 fw-bold main-heading">CHAT BOX</h3>
 
-
-
-    <div class="container mt-4 pb-5 text-center">
-
-        <div class="mb-3">
-            <h3 class="fw-bold main-heading">Expert review</h3>
-        </div>
-
-        <div class="m-5 mt-0 p-5 pt-2 row">
-            <div class="card col-3 border shadow-0">
+        <div class="m-5 row">
+            <div class="card bg-pastel-maroon col-3 shadow-5">
                 <small class="text-start p-3">
-                    <!-- list of all chats -->
-                    <table class="table table-sm text-dark w-100">
+                    <table class="table table-sm w-100">
                         <tbody>
                             <tr>
-                                <th scope="row"><a href="">normal_user</a></th>
-                            </tr>
-                            <tr>
-                                <th scope="row"><a href="">another_normal_user</a></th>
+                                <th scope="row"><a href=""><i class="fas fa-user-alt"></i> &nbsp;normal_user</a></th>
                             </tr>
                         </tbody>
                     </table>
                 </small>
             </div>
-            <div class="card col-9 border shadow-0">
-                <small class="text-start p-3">
-                    <!-- chat area -->
-                    <table class="chatbox w-100">
-                        <tbody>
-                            <tr>
-                                <td>
-                                    <p class="msg-send ">MESSAGE SEND Lorem ipsum dolor sit amet consectetur adipisicing
-                                        <br>
-                                        <span class="small text-muted">11:01 PM</span>
-                                    </p>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <p class="msg-send ">MESSAGE SEND Lorem ipsum dolor sit amet consectetur adipisicing
-                                        <br>
-                                        <span class="small text-muted">11:01 PM</span>
-                                    </p>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <p class="msg-recieved">Lorem ipsum dolor sit amet consectetur s atque vero?
-                                        <br><span class="small text-secondary">11:01 PM</span>
-                                    </p>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <p class="msg-send ">MESSAGE SEND Lorem ipsum dolor sit amet consectetur adipisicing
-                                        <br>
-                                        <span class="small text-muted">11:01 PM</span>
-                                    </p>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <p class="msg-recieved">Lorem ipsum dolor sit amet consectetur s atque vero?
-                                        <br><span class="small text-secondary">11:01 PM</span>
-                                    </p>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <p class="msg-recieved">Lorem ipsum dolor sit amet consectetur s atque vero?
-                                        <br><span class="small text-secondary">11:01 PM</span>
-                                    </p>
-                                </td>
-                            </tr>
+            <div class="col-1"></div>
+            <div class="card bg-pastel-maroon col-8 shadow-5">
+                <div class="chat-user-name"><i class="fas fa-user-alt"></i>&nbsp; normal_user</div>
+                <small class="text-start p-2 pb-4">
+                    <div id="chatbox">
+                        <p class="msg-send ">MESSAGE SEND</p>
+                        <p class="msg-recieved">Lorem ipsum</p>
+                        <p class="msg-send ">MESSAGE SEND</p>
+                        <p class="msg-recieved">Lorem ipsum</p>
+                        <!-- <form action="" method="post">
+                            <div class="form-outline">
+                                <textarea class="text-black form-control" rows="4"></textarea>
+                                <label class="form-label">Message</label>
+                            </div>
+                            <button type="button"
+                                class="btn btn-primary bg-primary-darker-2 shadow-0 btn-block">send</button>
+                        </form> -->
+                    </div>
+                    <form action="" method="post">
+                        <div class="form-outline">
+                            <textarea class="text-black form-control" rows="4"></textarea>
+                            <label class="form-label">Message</label>
+                        </div>
+                        <button type="button"
+                            class="btn btn-primary bg-primary-darker-2 shadow-0 btn-block">send</button>
+                    </form>
 
-                            <tr id="chat-type-box">
-                                <td>
-                                    <form action="" method="post">
-                                        <input class="w-75" type="text">
-                                        <button class="bg-secondary" style="width: 24.5%;" type="submit">SEND</button>
-                                    </form>
-                                </td>
-                            </tr>
-
-                        </tbody>
-                    </table>
                 </small>
             </div>
         </div>
@@ -167,7 +85,7 @@
 
             <p class="text-primary-darker">Powered by deep learning algorithms just for you!</p>
         </div>
-        <div class="bg-primary-darker p-3 text-light text-center">© 2022 Grammar Error Correction (GEC) Software</div>
+        <div class="bg-primary-darker-2 p-3 text-light text-center">© 2022 Grammar Error Correction (GEC) Software</div>
     </footer>
 
     <!-- MDB -->
