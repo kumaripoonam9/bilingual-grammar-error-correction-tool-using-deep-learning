@@ -61,8 +61,16 @@
                             <!-- <h5 class="card-title">Special title treatment</h5> -->
                             <p class="card-text p-3">Expert review
                             </p>
-                            <a href="#" class="btn btn-primary">Start using</a>
+                            {% if user.is_authenticated and request.user.premiumuser.paid == "Yes" %}
+                            <a href="{% url 'expert_review' %}" class="btn btn-primary">Start using</a>
+                            {% else %}
+                            <a href="" class="btn btn-primary">Start using</a>
+                            {% endif %}
                         </div>
+                        <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill badge-danger">
+                            <i class="fas fa-star"></i>  Premium feature
+                            <span class="visually-hidden">premium feature</span>
+                        </span>
                     </div>
                 </div>
             </div>

@@ -20,6 +20,7 @@ def summarizer(request):
 
     summary = ""
     error = 0
+    error_text = ""
     sentence = 1
     text = ""
     
@@ -29,27 +30,37 @@ def summarizer(request):
 
         if 'textarea_form_button' in request.POST:
 
-            text = request.POST.get('text_to_check')
-            text = text.replace("\n"," ")
-            text = text.replace("\r","")
-            
-            # print(text)
-
-            lang_detected = detect(text)
-            print(lang_detected)
-            lang_detected = lang_detected.split(" ")[0]
-
-            # text = text.split(".")
-
-            if lang_by_user=="en" and lang_detected!=lang_by_user or lang_by_user=="hi" and lang_detected=="en":
-                error = 1
+            if lang_by_user == 'en':
+                text = request.POST.get('text_to_check_eng')
             else:
-                if lang_by_user=="en":
-                    summary = eng_summary(text)
-                    # print(type(summary), summary)
+                text = request.POST.get('text_to_check_hi')
+
+            if text == "" or text == False:
+                error = 1
+                error_text = "Please type something"
+            else:
+                # text = request.POST.get('text_to_check')
+                text = text.replace("\n"," ")
+                text = text.replace("\r","")
+                
+                # print(text)
+
+                lang_detected = detect(text)
+                print(lang_detected)
+                lang_detected = lang_detected.split(" ")[0]
+
+                # text = text.split(".")
+
+                if lang_by_user=="en" and lang_detected!=lang_by_user or lang_by_user=="hi" and lang_detected=="en":
+                    error = 1
+                    error_text = "Language from input and language selected by user don't match!"
                 else:
-                    summary = hi_summary(text)
-                    # print(type(summary), summary)
+                    if lang_by_user=="en":
+                        summary = eng_summary(text)
+                        # print(type(summary), summary)
+                    else:
+                        summary = hi_summary(text)
+                        # print(type(summary), summary)
 
             # creating forms for audio and file upload
             file_form = FileUploadForm()
@@ -77,22 +88,19 @@ def summarizer(request):
                 lang_detected = lang_detected.split(" ")[0]
 
                 # print(text)
-                text = text.split("\n")
-                text = list(filter(None, text))
-                # print(text)
+                text = text.replace("\n"," ")
+                text = text.replace("\r","")
+
                 if lang_by_user=="en":
-                    for t in text:
-                        if not t.isspace():
-                            t = t.split(".")
-                            for x in t:
-                                if not x.isspace():
-                                    ct = correct_grammar_eng(x.strip(), 1)[0]
-                                    summary += ct
-                                    summary += " "
-                        summary = summary + "\n"
-                    print(summary)
+                    # text = text.replace("\n"," ")
+                    # text = text.replace("\r","")
+                    summary = eng_summary(text)
                 else:
-                    summary = "hindi model not implemented"
+                    # text = text.split("।")
+                    # text = text.replace("\n"," ")
+                    # text = text.replace("\r","")
+                    summary = hi_summary(text)
+                    # summary = "hindi model not implemented"
                
                 print(summary)
 
@@ -100,14 +108,21 @@ def summarizer(request):
             lang_by_user = request.POST.get('lang_by_user')
             filepath = 'summarizer/audio/gec_speech_record.wav'
 
-            if lang_by_user=="hi":
-                text = parse_transcription(filepath)
-                summary = text
+            if os.path.exists(filepath):
+                if lang_by_user=="hi":
+                    text = parse_transcription(filepath) + "।"
+                    text = text.replace("\n"," ")
+                    text = text.replace("\r","")
+                    print(text)
+                    summary = hi_summary(text)
+                else:
+                    text = parse_transcription_eng(filepath)
+                    summary = eng_summary(text)
+                
+                os.remove(filepath)
             else:
-                text = parse_transcription_eng(filepath)
-                summary = eng_summary(text)
-            
-            os.remove(filepath)
+                error = 1
+                error_text = "First record the audio"
 
             # creating file form
             file_form = FileUploadForm()
@@ -121,6 +136,7 @@ def summarizer(request):
     return render(request, "summarizer/summarizer.html", {"summary": summary, 
     "sentence":sentence, 
     "error":error,
+    "error_text": error_text,
     "file_form": file_form})
 
 

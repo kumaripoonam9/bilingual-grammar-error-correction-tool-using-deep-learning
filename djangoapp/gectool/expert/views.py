@@ -5,6 +5,7 @@ from json import dumps
 import random
 
 from .models import Room, Message, ExpertLanguage, PendingExpertReview
+from expert.forms import ExpertLanguageForm
 
 
 @login_required(login_url='login')
@@ -52,7 +53,6 @@ def chat(request):
 
 @login_required(login_url='login')
 def expert_review(request):
-
     secret_code = ''
 
     if request.method == 'POST':
@@ -75,7 +75,7 @@ def expert_review(request):
 
             expert_lang_requested = request.POST.get('expert_lang_requested')
             
-            get_experts = ExpertLanguage.objects.filter(languages_known=expert_lang_requested).values() | ExpertLanguage.objects.filter(languages_known='Both hindi and english').values()
+            get_experts = ExpertLanguage.objects.filter(languages_known=expert_lang_requested, verified=True).values() | ExpertLanguage.objects.filter(languages_known='Both hindi and english', verified=True).values()
 
             random_expert = random.choice(get_experts)     # random selection of an expert
             
@@ -85,6 +85,8 @@ def expert_review(request):
             userid = request.user.id
             # creating secret key (room name)
             secret_code = f'{username[0]}{username[-1]}-{userid}-{random_expert_userid}-{random_expert_username[0]}{random_expert_username[-1]}'
+
+            print(f'room name = {secret_code}\nuser = {username}\nexpert = {random_expert_username}')
 
             # saving new rooms to pending room
             try:
@@ -101,10 +103,10 @@ def expert_review(request):
                     new_pending_room.save()
 
             # context = {'secret_code': secret_code}
-
             # return render(request, "expert/expertreview.html", context)
+    
     pending_rooms = PendingExpertReview.objects.filter(expert=request.user)
-    print(pending_rooms)
+    # print(pending_rooms)
     context = {
         'secret_code': secret_code,
         'pending_rooms': pending_rooms,
@@ -172,3 +174,22 @@ def messaging(request, room_name):
     
     return render(request, "expert/chat.html", context)
 
+
+@login_required(login_url='login')
+def verification(request):
+
+    if request.method == "POST":
+        expertlangform = ExpertLanguageForm(request.POST, request.FILES) 
+        if expertlangform.is_valid():
+            expertlangs = expertlangform.save(commit=False)
+            expertlangs.user = request.user
+            expertlangs.save()
+            return redirect('profile')
+        
+    else:
+        expertlangform = ExpertLanguageForm()
+
+    context = {
+        'expertlangform': expertlangform
+    }
+    return render(request, "expert/expert_verification.html", context)

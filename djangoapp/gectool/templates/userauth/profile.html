@@ -23,7 +23,7 @@
                             <tbody>
                                 <tr>
                                     <th scope="row">Name</th>
-                                    <td>{{request.user.first_name}} {{request.user.last_name}}</td>
+                                    <td class="text-capitalize">{{request.user.first_name}} {{request.user.last_name}}</td>
                                 </tr>
                                 <tr>
                                     <th scope="row">Username</th>
@@ -62,17 +62,39 @@
                                 {% if langauges_known %}
                                 <tr>
                                     <th scope="row">Languages known</th>
-                                    <td>{{request.user.expertlanguage.languages_known}}</td>
+                                    <td>{{request.user.expertlanguage.languages_known}}<br>
+                                        {% if not request.user.expertlanguage.verified %}
+                                        (Certificates not yet verified)
+                                        {% else %}
+                                        (Certificates verified <i class="fas fa-check text-success"></i>)
+                                        {% endif %}
+                                    </td>
                                 </tr>                                
                                 {% else %}
                                 <tr>
                                     <th scope="row">What languages do you know?</th>
                                     <td>
-                                        <div class="card m-auto p-2 text-dark">
-                                            <form action="" method="post">
+                                        <div class="card m-auto p-4 text-dark">
+                                            <form action="{% url 'expert_verification' %}" method="post">
                                                 {% csrf_token %}
-                                                {{expertlangform.as_p}}         
-                                                <button class="w-100 btn btn-primary" type="submit">Submit</button>
+                                                {% comment %} {{expertlangform.as_p}}          {% endcomment %}
+                                                <p class="text-info">Note: 
+                                                    <ul class="text-info">
+                                                        <li>Submitting this form will take you to another page where you need to upload your LANGUAGE CERTIFICATIONS</li>
+                                                        <li>Certifications will verified by admin</li>
+                                                    </ul>
+                                                </p>
+                                                <div class="form-check">
+                                                    <input class="form-check-input" type="checkbox" value="English" name="english" id="english" />
+                                                    <label class="form-check-label" for="english">English</label>
+                                                </div>
+                                                
+                                                <!-- Checked checkbox -->
+                                                <div class="form-check ">
+                                                    <input class="form-check-input" type="checkbox" value="Hindi" id="hindi" name="hindi" checked/>
+                                                    <label class="form-check-label" for="hindi">Hindi</label>
+                                                </div>
+                                                <button class="w-100 mt-3 btn btn-primary" type="submit">Submit</button>
                                             </form>  
                                         </div>
                                     </td>

@@ -15,4 +15,4 @@ class ExpertLanguageForm(forms.ModelForm):
 
     class Meta:
         model = ExpertLanguage
-        fields = ('languages_known',)
+        fields = ('languages_known','cerificates')

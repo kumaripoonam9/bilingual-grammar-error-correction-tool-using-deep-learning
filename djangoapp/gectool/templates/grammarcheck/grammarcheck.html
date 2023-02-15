@@ -45,13 +45,15 @@
                     </div>
                 </div>
                 <div class="m-auto bg-white p-5 pb-4 rounded-5 col-8 shadow-3">
-                    
+                    <script language="javascript">
+                        CreateCustomHindiTextArea("text_to_check_hi","हिन्दी भाषा के लिए यहाँ लिखें",97,5,true);
+                    </script>
                     <!-- Message input -->
                     <div class="form-outline mb-4">
                         <textarea
                             class="form-control"
-                            id="text_to_check"
-                            name="text_to_check"
+                            id="text_to_check_eng"
+                            name="text_to_check_eng"
                             rows="10"
                             maxlength="1000"
                             ></textarea>
@@ -67,7 +69,7 @@
             {% if error == 1 %}
             <p class="card-text pb-4 class text-center fixed-bottom alert alert-danger m-3 col-3" id="error_text">
                 <b>Error:</b><br>
-                Language from input and language selected by user don't match!
+                {{error_text}}
             </p>
             {% endif %}
 
@@ -135,13 +137,6 @@
                 </div>
             </form>
 
-            {% comment %} lang detection error {% endcomment %}
-            {% if error == 1 %}
-            <p class="card-text pb-4 class text-center fixed-bottom alert alert-danger m-3 col-3" id="error_text">
-                <b>Error:</b><br>
-                Language from input and language selected by user don't match!
-            </p>
-            {% endif %}
         </div>
         
         <p class="or">OR</p>
@@ -188,13 +183,6 @@
                 </div>
             </form>
 
-            {% comment %} lang detection error {% endcomment %}
-            {% if error == 1 %}
-            <p class="card-text pb-4 class text-center fixed-bottom alert alert-danger m-3 col-3" id="error_text">
-                <b>Error:</b><br>
-                Language from input and language selected by user don't match!
-            </p>
-            {% endif %}
         </div>
 
 
@@ -210,7 +198,7 @@
                                onclick="copyText()">Copy text</button>
                         </li>
                         <li class="nav-item">
-                            <a href="{% url 'spellcheck/pdf' %}">
+                            <a href="{% url 'result/pdf' %}">
                                 <button class="nav-link active btn btn-secondary" aria-current="true"
                                 onclick="">Download</button>
                             </a>

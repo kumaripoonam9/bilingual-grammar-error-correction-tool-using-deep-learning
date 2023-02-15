@@ -25,8 +25,8 @@
     <div class="container text-center">
         <div class="position-relative back-buttons">
             <a href="{% url 'expert_review' %}">
-                <button class="position-absolute top-0 start-0 btn btn-small btn-primary bg-primary-darker-2 shadow-1"><i
-                    class="fas fa-arrow-left"></i> previous page</button>
+                <button class="position-absolute top-0 start-0 btn btn-small btn-primary bg-primary-darker shadow-1"><i
+                    class="fas fa-arrow-left"></i> &nbsp; expert review page</button>
             </a>
         </div>
         <h3 class="m-5 fw-bold main-heading">CHAT BOX</h3>
@@ -44,12 +44,13 @@
 
                     <table class="table table-sm w-100 room_list">
                         <tbody>
+                            {% if not rooms %}
+                            <div class="text-white">You have no chats</div>
+                            {% endif %}
                             {% for room in rooms %}
-                            {% comment %} {% if u != request.user.username %} {% endcomment %}
                             <tr>
                                 <th scope="row"><a href="{% url 'room' room_name=room %}"><i class="fas fa-comments"></i> &nbsp; {{room}}</a></th>
                             </tr>
-                            {% comment %} {% endif %} {% endcomment %}
                             {% endfor %}
                         </tbody>
                     </table>

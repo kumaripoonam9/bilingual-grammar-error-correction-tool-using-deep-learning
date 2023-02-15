@@ -91,9 +91,15 @@ p#result_text {
     text-align: left;
 }
 
-form.django-form input {
+form.django-form input,
+form.django-form select {
     width: 100%;
 }
+
+form.django-form select {
+    padding: .2rem
+}
+
 
 /*---------------------- expert chat box ---------------------*/
 

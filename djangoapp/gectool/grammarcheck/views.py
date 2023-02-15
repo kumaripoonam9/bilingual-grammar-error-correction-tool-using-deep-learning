@@ -4,7 +4,7 @@ from django.contrib.auth.decorators import login_required
 from django.views.decorators.csrf import csrf_exempt
 
 from .grammarcheck_eng import correct_grammar_eng
-from .grammarcheck_hi import correct_grammar_eng
+from .grammarcheck_hi import correct_grammar_hindi
 
 from langdetect import detect
 import aspose.words as aw
@@ -20,6 +20,7 @@ def grammarcheck(request):
 
     corrected_text = ""
     error = 0
+    error_text = ""
     sentence = 1
     text_to_check = ""
     
@@ -29,28 +30,37 @@ def grammarcheck(request):
 
         if 'textarea_form_button' in request.POST:
 
-            # lang_by_user = request.POST.get('lang_by_user')
-            text_to_check = request.POST.get('text_to_check')
-
-            text_to_check = text_to_check.replace("\n"," ")
-
-            lang_detected = detect(text_to_check)
-            lang_detected = lang_detected.split(" ")[0]
-
-            text_to_check = text_to_check.split(".")
-
-            if lang_by_user=="en" and lang_detected!=lang_by_user or lang_by_user=="hi" and lang_detected=="en":
-                error = 1
+            if lang_by_user == 'en':
+                text_to_check = request.POST.get('text_to_check_eng')
             else:
-                if lang_by_user=="en":
-                    for t in text_to_check:
-                        ct = correct_grammar_eng(t.strip(), 1)[0]
-                        # corrected_text += ct.capitalize()
-                        corrected_text += ct
-                        corrected_text += " "
-                    print(corrected_text)
+                text_to_check = request.POST.get('text_to_check_hi')
+            
+            if text_to_check == "" or text_to_check == False:
+                error = 1
+                error_text = "Please type something"
+            else:
+                # lang_by_user = request.POST.get('lang_by_user')
+                # text_to_check = request.POST.get('text_to_check')
+
+                text_to_check = text_to_check.replace("\n"," ")
+
+                lang_detected = detect(text_to_check)
+                lang_detected = lang_detected.split(" ")[0]
+
+                if lang_by_user=="en" and lang_detected!=lang_by_user or lang_by_user=="hi" and lang_detected=="en":
+                    error = 1
+                    error_text = "Language from input and language selected by user don't match!"
                 else:
-                    corrected_text = "hindi model not implemented"
+                    if lang_by_user=="en":
+                        text_to_check = text_to_check.split(".")
+                        for t in text_to_check:
+                            ct = correct_grammar_eng(t.strip(), 1)[0]
+                            # corrected_text += ct.capitalize()
+                            corrected_text += ct
+                            corrected_text += " "
+                        print(corrected_text)
+                    else:
+                        corrected_text = correct_grammar_hindi(text_to_check)
 
             # creating forms for audio and file upload
             file_form = FileUploadForm()
@@ -78,10 +88,11 @@ def grammarcheck(request):
                 lang_detected = lang_detected.split(" ")[0]
 
                 # print(text_to_check)
-                text_to_check = text_to_check.split("\n")
-                text_to_check = list(filter(None, text_to_check))
-                # print(text_to_check)
+                
                 if lang_by_user=="en":
+                    text_to_check = text_to_check.split("\n")
+                    text_to_check = list(filter(None, text_to_check))
+                # print(text_to_check)
                     for t in text_to_check:
                         if not t.isspace():
                             t = t.split(".")
@@ -93,7 +104,9 @@ def grammarcheck(request):
                         corrected_text = corrected_text + "\n"
                     print(corrected_text)
                 else:
-                    corrected_text = "hindi model not implemented"
+                    # text_to_check = text_to_check.replace("\n"," ")
+                    corrected_text = correct_grammar_hindi(text_to_check)
+                    # corrected_text = "hindi model not implemented"
                
                 print(corrected_text)
 
@@ -101,19 +114,27 @@ def grammarcheck(request):
             lang_by_user = request.POST.get('lang_by_user')
             filepath = 'grammarcheck/audio/gec_speech_record.wav'
 
-            if lang_by_user=="hi":
-                text_to_check = parse_transcription(filepath)
-                corrected_text = text_to_check
+            if os.path.exists(filepath):
+                if lang_by_user=="hi":
+                    text_to_check = parse_transcription(filepath)
+                    corrected_text = correct_grammar_hindi(text_to_check)
+                else:
+                    text_to_check = parse_transcription_eng(filepath)
+                    # corrected_text = correct_grammar_eng(text_to_check, 1)[0]
+                    corrected_text = correct_grammar_eng(text_to_check, 1)[0]
+                    # corrected_text = "hindi model not implemented"
+                
+                os.remove(filepath)
             else:
-                text_to_check = parse_transcription_eng(filepath)
-                corrected_text = correct_grammar_eng(text_to_check, 1)[0]
-            
-            os.remove(filepath)
+                error = 1
+                error_text = "First record the audio"
 
             # creating file form
             file_form = FileUploadForm()
 
         request.session['corrected_text'] = corrected_text
+        request.session['toolname'] = "Grammar Correction"
+
 
     else:
         file_form = FileUploadForm()
@@ -121,14 +142,16 @@ def grammarcheck(request):
     return render(request, "grammarcheck/grammarcheck.html", {"corrected_text": corrected_text, 
     "sentence":sentence, 
     "error":error,
+    "error_text": error_text,
     "file_form": file_form})
 
 
-
+@login_required(login_url='login')
 def pdf(request):
     corrected_text = request.session.get('corrected_text')
+    toolname = request.session.get('toolname')
     context = {
-        "toolname": "Grammar Correction",
+        "toolname": toolname,
         "corrected_text": corrected_text,
     }
     print(context)

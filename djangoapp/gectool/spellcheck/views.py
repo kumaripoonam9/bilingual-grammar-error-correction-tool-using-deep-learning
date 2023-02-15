@@ -22,6 +22,7 @@ def spellcheck(request):
 
     corrected_text = ""
     error = 0
+    error_text = ""
     sentence = 1
     text_to_check = ""
     
@@ -30,54 +31,62 @@ def spellcheck(request):
         if 'textarea_form_button' in request.POST:
 
             lang_by_user = request.POST.get('lang_by_user')
-            text_to_check = request.POST.get('text_to_check')
-
-            lang_detected = detect(text_to_check)
-            lang_detected = lang_detected.split(" ")[0]
-
-
-            if lang_by_user=="en" and lang_detected!=lang_by_user or lang_by_user=="hi" and lang_detected=="en":
-                error = 1
+            if lang_by_user == 'en':
+                text_to_check = request.POST.get('text_to_check_eng')
             else:
-                if lang_by_user=="en":
-                    text_to_check = text_to_check.split("\n")
-                    for t in text_to_check:
-                        if t!="\r":
-                            t = t.split(".")
-                            for x in t:
-                                ct = correct_spelling(x)
-                                # print(corrected_text)
-                                ct = ct[0].term.capitalize()
-                                corrected_text = corrected_text + ct + ". " 
-                        corrected_text = corrected_text + "\n"
-                    print(corrected_text)
+                text_to_check = request.POST.get('text_to_check_hi')
+            
+            if text_to_check == "" or text_to_check == False:
+                error = 1
+                error_text = "Please type something"
+            else:
+                lang_detected = detect(text_to_check)
+                print("lang_detected = ", lang_detected)
+                lang_detected = lang_detected.split(" ")[0]
+
+                if lang_by_user=="en" and lang_detected!=lang_by_user or lang_by_user=="hi" and lang_detected=="en":
+                    error = 1
+                    error_text = "Language from input and language selected by user don't match!"
                 else:
-                    # no_of_suggestions = 2
-                    pspell = phunspell.Phunspell('hi_IN')
-                    text_to_check = text_to_check.split(" ")
-
-                    # print(text_to_check)
-
-                    if len(text_to_check)==1:
-                        if pspell.lookup(text_to_check[0]):
-                            corrected_text = "शब्द पहले से ही सही है।"
-                        else:
-                            sentence = 0
-                            corrected_text = hi_spellcheck(text_to_check[0])
-                    else:
+                    if lang_by_user=="en":
+                        text_to_check = text_to_check.split("\n")
                         for t in text_to_check:
-                            if t=="।":
-                                corrected_text += t
-                            elif not pspell.lookup(t):
-                                # print("incorrect w:", t)
-                                ct = hi_spellcheck(t)
-                                corrected_text += ct[0]
-                            # elif t=="।":
-                            #     corrected_text += t
+                            if t!="\r":
+                                t = t.split(".")
+                                for x in t:
+                                    ct = correct_spelling(x)
+                                    # print(corrected_text)
+                                    ct = ct[0].term.capitalize()
+                                    corrected_text = corrected_text + ct + ". " 
+                            corrected_text = corrected_text + "\n"
+                        # print(corrected_text)
+                    else:
+                        # no_of_suggestions = 2
+                        pspell = phunspell.Phunspell('hi_IN')
+                        text_to_check = text_to_check.split(" ")
+
+                        # print(text_to_check)
+
+                        if len(text_to_check)==1:
+                            if pspell.lookup(text_to_check[0]):
+                                corrected_text = "शब्द पहले से ही सही है।"
                             else:
-                                # print("correct w:", t)
-                                corrected_text += t
-                            corrected_text += " "
+                                sentence = 0
+                                corrected_text = hi_spellcheck(text_to_check[0])
+                        else:
+                            for t in text_to_check:
+                                if t=="।":
+                                    corrected_text += t
+                                elif not pspell.lookup(t):
+                                    # print("incorrect w:", t)
+                                    ct = hi_spellcheck(t)
+                                    corrected_text += ct[0]
+                                # elif t=="।":
+                                #     corrected_text += t
+                                else:
+                                    # print("correct w:", t)
+                                    corrected_text += t
+                                corrected_text += " "
 
             # creating forms for audio and file upload
             file_form = FileUploadForm()
@@ -150,13 +159,30 @@ def spellcheck(request):
             lang_by_user = request.POST.get('lang_by_user')
             filepath = 'spellcheck/audio/gec_speech_record.wav'
 
-            if lang_by_user=="hi":
-                text_to_check = parse_transcription(filepath)
-            else:
-                text_to_check = parse_transcription_eng(filepath)
+            if os.path.exists(filepath):
+                if lang_by_user=="hi":
+                    text_to_check = parse_transcription(filepath)
+                    # pspell = phunspell.Phunspell('hi_IN')
+                    # for t in text_to_check:
+                    #     if not pspell.lookup(t):
+                    #         # print("incorrect w:", t)
+                    #         ct = hi_spellcheck(t)
+                    #         corrected_text += ct[0]
+                    #     # elif t=="।":
+                    #     #     corrected_text += t
+                    #     else:
+                    #         # print("correct w:", t)
+                    #         corrected_text += t
+                    #     corrected_text += " "
+                else:
+                    text_to_check = parse_transcription_eng(filepath)
+                    corrected_text = text_to_check
 
-            corrected_text = text_to_check
-            os.remove(filepath)
+                corrected_text = text_to_check
+                os.remove(filepath)
+            else:
+                error = 1
+                error_text = "First record the audio"
 
             # creating file form
             file_form = FileUploadForm()
@@ -170,6 +196,7 @@ def spellcheck(request):
     return render(request, "spellcheck/spellcheck.html", {"corrected_text": corrected_text, 
     "sentence":sentence, 
     "error":error,
+    "error_text": error_text,
     "file_form": file_form})
 
 
