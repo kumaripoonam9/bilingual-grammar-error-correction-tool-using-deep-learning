@@ -23,6 +23,7 @@ def grammarcheck(request):
     error_text = ""
     sentence = 1
     text_to_check = ""
+    original_text = ""
     
     if request.method=="POST":
 
@@ -35,6 +36,8 @@ def grammarcheck(request):
             else:
                 text_to_check = request.POST.get('text_to_check_hi')
             
+            original_text = text_to_check
+
             if text_to_check == "" or text_to_check == False:
                 error = 1
                 error_text = "Please type something"
@@ -87,26 +90,31 @@ def grammarcheck(request):
                 lang_detected = detect(text_to_check)
                 lang_detected = lang_detected.split(" ")[0]
 
-                # print(text_to_check)
-                
-                if lang_by_user=="en":
-                    text_to_check = text_to_check.split("\n")
-                    text_to_check = list(filter(None, text_to_check))
-                # print(text_to_check)
-                    for t in text_to_check:
-                        if not t.isspace():
-                            t = t.split(".")
-                            for x in t:
-                                if not x.isspace():
-                                    ct = correct_grammar_eng(x.strip(), 1)[0]
-                                    corrected_text += ct
-                                    corrected_text += " "
-                        corrected_text = corrected_text + "\n"
-                    print(corrected_text)
+                if lang_by_user != lang_detected:
+                    error = 1
+                    error_text = "Input language and uploaded file language don't match"
                 else:
-                    # text_to_check = text_to_check.replace("\n"," ")
-                    corrected_text = correct_grammar_hindi(text_to_check)
-                    # corrected_text = "hindi model not implemented"
+                    print(text_to_check)
+                    original_text = text_to_check
+                    
+                    if lang_by_user=="en":
+                        text_to_check = text_to_check.split("\n")
+                        text_to_check = list(filter(None, text_to_check))
+                    # print(text_to_check)
+                        for t in text_to_check:
+                            if not t.isspace():
+                                t = t.split(".")
+                                for x in t:
+                                    if not x.isspace():
+                                        ct = correct_grammar_eng(x.strip(), 1)[0]
+                                        corrected_text += ct
+                                        corrected_text += " "
+                            corrected_text = corrected_text + "\n"
+                        print(corrected_text)
+                    else:
+                        # text_to_check = text_to_check.replace("\n"," ")
+                        corrected_text = correct_grammar_hindi(text_to_check)
+                        # corrected_text = "hindi model not implemented"
                
                 print(corrected_text)
 
@@ -123,7 +131,7 @@ def grammarcheck(request):
                     # corrected_text = correct_grammar_eng(text_to_check, 1)[0]
                     corrected_text = correct_grammar_eng(text_to_check, 1)[0]
                     # corrected_text = "hindi model not implemented"
-                
+                original_text = "Audio recorded"
                 os.remove(filepath)
             else:
                 error = 1
@@ -139,11 +147,16 @@ def grammarcheck(request):
     else:
         file_form = FileUploadForm()
 
-    return render(request, "grammarcheck/grammarcheck.html", {"corrected_text": corrected_text, 
-    "sentence":sentence, 
-    "error":error,
-    "error_text": error_text,
-    "file_form": file_form})
+    context = {
+        "corrected_text": corrected_text, 
+        "sentence":sentence, 
+        "error":error,
+        "error_text": error_text,
+        "file_form": file_form,
+        "original_text": original_text
+    }
+
+    return render(request, "grammarcheck/grammarcheck.html", context)
 
 
 @login_required(login_url='login')

@@ -23,8 +23,12 @@ def textrank(document):
     nx_graph = nx.from_scipy_sparse_matrix(similarity_graph)
     scores = nx.pagerank(nx_graph)
     sentence_array = sorted(((scores[i], s) for i, s in enumerate(sentences)), reverse=True)
+
+    print(sentence_array)
         
     sentence_array = np.asarray(sentence_array)
+
+    print(len(sentence_array))
         
     fmax = float(sentence_array[0][0])
     fmin = float(sentence_array[len(sentence_array) - 1][0])

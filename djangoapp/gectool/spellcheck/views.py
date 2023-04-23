@@ -25,6 +25,7 @@ def spellcheck(request):
     error_text = ""
     sentence = 1
     text_to_check = ""
+    original_text = ""
     
     if request.method=="POST":
 
@@ -35,7 +36,8 @@ def spellcheck(request):
                 text_to_check = request.POST.get('text_to_check_eng')
             else:
                 text_to_check = request.POST.get('text_to_check_hi')
-            
+            original_text = text_to_check
+
             if text_to_check == "" or text_to_check == False:
                 error = 1
                 error_text = "Please type something"
@@ -113,6 +115,7 @@ def spellcheck(request):
                 lang_detected = detect(text_to_check)
                 lang_detected = lang_detected.split(" ")[0]
 
+                original_text = text_to_check
                 print(text_to_check)
                 # text corections
                 if lang_detected=="en":
@@ -176,9 +179,10 @@ def spellcheck(request):
                     #     corrected_text += " "
                 else:
                     text_to_check = parse_transcription_eng(filepath)
-                    corrected_text = text_to_check
+                    # corrected_text = text_to_check
 
                 corrected_text = text_to_check
+                original_text = "Audio recorded"
                 os.remove(filepath)
             else:
                 error = 1
@@ -193,11 +197,15 @@ def spellcheck(request):
     else:
         file_form = FileUploadForm()
 
-    return render(request, "spellcheck/spellcheck.html", {"corrected_text": corrected_text, 
-    "sentence":sentence, 
-    "error":error,
-    "error_text": error_text,
-    "file_form": file_form})
+    context = {
+        "corrected_text": corrected_text, 
+        "sentence":sentence, 
+        "error":error,
+        "error_text": error_text,
+        "file_form": file_form,
+        "original_text": original_text
+    }
+    return render(request, "spellcheck/spellcheck.html", context)
 
 
 @login_required(login_url='login')

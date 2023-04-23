@@ -19,7 +19,7 @@
                 {% csrf_token %}
 
                 {% comment %} language {% endcomment %}
-                <p>Select language in which you want to check your spellings:</p>
+                <p>Select language in which you want to check your grammar:</p>
                 <div class="mb-3">
                     <div class="form-check form-check-inline">
                         <input
@@ -49,7 +49,7 @@
                         CreateCustomHindiTextArea("text_to_check_hi","हिन्दी भाषा के लिए यहाँ लिखें",97,5,true);
                     </script>
                     <!-- Message input -->
-                    <div class="form-outline mb-4">
+                    <div class="form-outline mb-4 mt-3">
                         <textarea
                             class="form-control"
                             id="text_to_check_eng"
@@ -61,7 +61,7 @@
                     </div>
 
                     <!-- Submit button -->
-                    <button name="textarea_form_button" type="submit" class="btn btn-primary btn-block mb-4">Correct spellings</button>
+                    <button name="textarea_form_button" type="submit" class="btn btn-primary btn-block mb-4">Correct grammar</button>
                 </div>
             </form>
 
@@ -82,7 +82,7 @@
             <form method="post" name="audio_form" action="">
                 {% csrf_token %}
                 {% comment %} language {% endcomment %}
-                <p class="">Select language in which you want to check your spellings:</p>
+                <p class="">Select language in which you want to check your grammar:</p>
                 <div class="mb-3">
                     <div class="form-check form-check-inline">
                         <input
@@ -133,7 +133,7 @@
                     <script src="{% static 'js/app.js' %}"></script>
 
                     <!-- Submit button -->
-                    <button name="audio_form_button" type="submit" class="btn btn-primary btn-block mb-4">Correct spellings</button>
+                    <button name="audio_form_button" type="submit" class="btn btn-primary btn-block mb-4">Correct grammar</button>
                 </div>
             </form>
 
@@ -146,7 +146,7 @@
             <form method="post" name="file_form" class="" enctype="multipart/form-data">
                 {% csrf_token %}
                 {% comment %} language {% endcomment %}
-                <p class="">Select language in which you want to check your spellings:</p>
+                <p class="">Select language in which you want to check your grammar:</p>
                 <div class="mb-3">
                     <div class="form-check form-check-inline">
                         <input
@@ -179,7 +179,7 @@
                     </div>
 
                     <!-- Submit button -->
-                    <button name="file_form_button" type="submit" class="btn btn-primary btn-block mb-4">Correct spellings</button>
+                    <button name="file_form_button" type="submit" class="btn btn-primary btn-block mb-4">Correct grammar</button>
                 </div>
             </form>
 
@@ -206,7 +206,9 @@
                     </ul>
                 </div>
                 <div class="card-body">
-                    <h5 class="card-title pb-3">Spellings Corrected Output</h5>
+                    <h5 class="card-title pb-3">Original Input</h5>
+                    <p class="text-start card-text pb-4" >{{original_text}}</p>
+                    <h5 class="card-title pb-3">Grammar Corrected Output</h5>
                     <p class="text-start card-text pb-4" id="result_text">{{ corrected_text|linebreaksbr }}</p>
                 </div>
             </div>

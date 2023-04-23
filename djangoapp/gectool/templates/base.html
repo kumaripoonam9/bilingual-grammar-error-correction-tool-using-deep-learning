@@ -24,6 +24,8 @@
     <link rel="stylesheet" type="text/css" href="https://hinkhoj.com/common/css/keyboard.css" />
     <!-- custom css -->
     <link rel="stylesheet" href=" {% static 'style/common.css' %} ">
+
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
 </head>
 
 <body class="bg-1-purple text-black">
@@ -58,6 +60,11 @@
                     {% endif %}
                         <a class="nav-link" href="{% url 'tools' %}">Tools</a>
                     </li>
+                    {% if request.user.premiumuser.paid == "Yes" or request.user.profile.user_type == "Expert user" %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'expert_review' %}">Expert review</a>
+                    </li>
+                    {% endif %}
                 </ul>
                 <!-- Left links -->
 

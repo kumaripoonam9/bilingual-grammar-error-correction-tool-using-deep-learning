@@ -1,40 +1,18 @@
+{% extends 'base.html' %}
 {% load static %}
 
-<!DOCTYPE html>
-<html lang="en">
+{% block title %}| Chat
+{% endblock title %}
 
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GEC Tool | Chatbox</title>
-    <!-- Font Awesome -->
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet" />
-    <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap" rel="stylesheet" />
-    <!-- MDB -->
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/6.0.0/mdb.min.css" rel="stylesheet" />
-    <!-- custom css -->
-    <link rel="stylesheet" href="{% static 'style/common.css' %}">
-    {% comment %} jquery {% endcomment %}
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
-</head>
+{% block mainbody %}
 
-<body class="expert">
+    <div class="text-center expert">
 
-    <div class="container text-center">
-        <div class="position-relative back-buttons">
-            <a href="{% url 'expert_review' %}">
-                <button class="position-absolute top-0 start-0 btn btn-small btn-primary bg-primary-darker shadow-1"><i
-                    class="fas fa-arrow-left"></i> &nbsp; expert review page</button>
-            </a>
-        </div>
-        <h3 class="m-5 fw-bold main-heading">CHAT BOX</h3>
+        {% comment %} <h3 class="m-5 fw-bold main-heading">CHAT BOX</h3> {% endcomment %}
 
         <div class="m-5 row">
-
-            <div class="card bg-pastel-maroon col-3 shadow-5">
-                <small class="text-start p-3">
+            <div class="card bg-secondary-2 col-3 shadow-0">
+                {% comment %} <small class="text-start p-3"> {% endcomment %}
 
                     {% comment %} <div class="room_list">
                         {% for room in rooms %}
@@ -42,11 +20,11 @@
                         {% endfor %}
                     </div> {% endcomment %}
 
-                    <table class="table table-sm w-100 room_list">
+                    <table class="table table-sm w-100 room_list text-start">
                         <tbody>
-                            {% if not rooms %}
-                            <div class="text-white">You have no chats</div>
-                            {% endif %}
+                            {% comment %} {% if not rooms %} {% endcomment %}
+                            <div class="text-secondary text-start m-2 mt-3">Your chats</div>
+                            {% comment %} {% endif %} {% endcomment %}
                             {% for room in rooms %}
                             <tr>
                                 <th scope="row"><a href="{% url 'room' room_name=room %}"><i class="fas fa-comments"></i> &nbsp; {{room}}</a></th>
@@ -54,71 +32,98 @@
                             {% endfor %}
                         </tbody>
                     </table>
-                </small>
+                {% comment %} </small> {% endcomment %}
+
             </div>
 
             <div class="col-1"></div>
+
+            <style>
+                p.attachment {
+                    padding: .7rem;
+                }
+                p.attachment > a {
+                    background-color: rgb(239, 255, 239);
+                    border-radius: .3rem;
+                    padding: .3rem;
+                    color: black;
+                }
+            </style>
             
-            <div class="card bg-pastel-maroon col-8 shadow-5">
+            <div class="card bg-secondary-2 col-8 shadow-0">
                 {% if convo == False %}
 
                 <div class="no-convo m-3 p-5">
-                    <i class="text-light fas fa-comments fa-8x mb-4"></i><br>
-                    <small class='text-light'>Select a conversation</small>
-                </div>
+                    <i class="text-secondary fas fa-comments fa-8x mb-4"></i><br>
+                    <small class='text-secondary'>Select a conversation</small>
+                </div>      
                 
                 {% else %}
                 
-                <div class="chat-user-name text-center fs-5">
-                    <i class="fas fa-users"></i>&nbsp; {{room_name}}</div>
+                <div class="chat-user-name  fw-bold text-white p-3"><i class="fas fa-comments fw-0"></i>&nbsp;&nbsp;&nbsp; <span  contenteditable="true">{{room_name}}</span></div>
                 
-                <small class="text-start p-2 pb-4 parent">
+                <div class="parent">
                     <div id="chatbox">
                         {% for msg in messages %}
-                        {% if msg.sender != request.user.username %}
-                        <p class="msg-recieved">{{msg.message}}</p>
-                        {% else %}
-                        <p class="msg-send">{{msg.message}}</p>
-                        {% endif %}                                
+                            {% if msg.sender != request.user.username %}
+                                {% if msg.message %}<p class="msg-recieved">{{msg.message}}</p>{% endif %}                                
+                                {% if msg.attachment %}<p class="msg-recieved attachment">
+                                    <a href="../../../../media/{{ msg.attachment }}" target="_blank">{{msg.attachment.name|slice:"5:"}}</a>
+                                </p>{% endif %}
+                            {% else %}
+                                {% if msg.message %}<p class="msg-send">{{msg.message}}</p>{% endif %}  
+                                {% if msg.attachment %}<p class="msg-send attachment">
+                                    <a href="../../../../media/{{ msg.attachment }}" target="_blank">{{ msg.attachment.name|slice:"5:" }}</a>
+                                </p>{% endif %}
+                            {% endif %}                                
                         {% endfor %}
                     </div>
-                    <form id='message_form' action="" method="post">
+
+                    <form method="post" name="file_form" class="mb-3 mt-3"  enctype="multipart/form-data">
+                        {% csrf_token %}
+                        {% for f in input_form %}
+                            {{f}}
+                        {% endfor %}
+                        <button type="submit" name="message_submit_button"
+                            class="btn btn-primary bg-primary-darker shadow-0 btn-block">send</button>             
+                    </form>
+
+                    {% comment %} <form id='message_form' class="mb-3 mt-3" action="" method="post">
                         {% csrf_token %}
                         <div class="form-outline">
                             <textarea 
-                                id='message' name='message' 
+                                id='message' name='message'  
                                 class="text-black form-control" rows="4"></textarea>
                             <label for='message' class="form-label">Message</label>
-                        </div>
-                        <button type="submit"
-                            class="btn btn-primary bg-primary-darker-2 shadow-0 btn-block">send</button>
-                    </form>                            
-                </small>
+                        </div>                        
+                        <button type="submit" name="message_submit_button"
+                            class="btn btn-primary bg-primary-darker shadow-0 btn-block">send</button>
+                    </form>
+
+                    <form method="post" name="file_form" class="" enctype="multipart/form-data">
+                        {% csrf_token %}
+                            <div class="mb-5">
+                                <h6 class="main-heading pb-2">Upload your file here:</h6>
+                                <p class="small">Note: Kindly ensure the uploaded file is in either .doc, .docx, .pdf, .txt formats</p>
+                                {% for inp in file_form %}{{inp}}{% endfor %}
+                            </div>
+        
+                            <!-- Submit button -->
+                            <button name="file_form_button" type="submit" class="btn btn-primary btn-block mb-4">Correct grammar</button>
+                   
+                    </form> {% endcomment %}
+                                                
+                </div>
                 {% endif %}               
 
-                
             </div>
             
         </div>
 
+    
     </div>
 
-    
-
-
-
-    <footer>
-        <div class="text-end p-5 mt-5 pb-1">
-            <img src="{% static 'assets/images/logo.png' %}" height="24" alt="gec.dL Logo" loading="lazy" />
-
-            <p class="text-primary-darker">Powered by deep learning algorithms just for you!</p>
-        </div>
-        <div class="bg-primary-darker p-3 text-light text-center">© 2022 Grammar Error Correction (GEC) Software</div>
-    </footer>
-
-    <!-- MDB -->
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/6.0.0/mdb.min.js"></script>
     <script src="{% static 'js/chat.js' %}"></script>
-</body>
 
-</html>
+{% endblock mainbody %}
+

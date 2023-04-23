@@ -2,6 +2,8 @@ from django.db import models
 from django.contrib.auth.models import User
 
 
+
+
 class Room(models.Model):
     room_name = models.CharField(max_length=255)
 
@@ -9,14 +11,21 @@ class Room(models.Model):
         return self.room_name 
     
 
+
+
 class Message(models.Model):
     room = models.ForeignKey(Room, on_delete=models.CASCADE)
     sender = models.CharField(max_length=255)
-    message = models.TextField()
+    message = models.TextField(null=True, blank=True)
+    # has_attachment = models.BooleanField(default=False)
+    attachment = models.FileField(null=True, blank=True, upload_to='chat/')
 
     def __str__(self):
-        return str(self.room)
+        return f'[{self.room.room_name}] {self.message}'
     
+
+
+
 class ExpertLanguage(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     LANGUAGES = [
@@ -31,6 +40,8 @@ class ExpertLanguage(models.Model):
     def __str__(self):
         return f'{self.user.username}'
     
+
+
 
 class PendingExpertReview(models.Model):
     expert = models.ForeignKey(User, on_delete=models.CASCADE)

@@ -23,6 +23,7 @@ def summarizer(request):
     error_text = ""
     sentence = 1
     text = ""
+    original_text = ""
     
     if request.method=="POST":
 
@@ -34,7 +35,7 @@ def summarizer(request):
                 text = request.POST.get('text_to_check_eng')
             else:
                 text = request.POST.get('text_to_check_hi')
-
+            original_text = text
             if text == "" or text == False:
                 error = 1
                 error_text = "Please type something"
@@ -88,6 +89,7 @@ def summarizer(request):
                 lang_detected = lang_detected.split(" ")[0]
 
                 # print(text)
+                original_text = text
                 text = text.replace("\n"," ")
                 text = text.replace("\r","")
 
@@ -118,7 +120,7 @@ def summarizer(request):
                 else:
                     text = parse_transcription_eng(filepath)
                     summary = eng_summary(text)
-                
+                original_text = "Audio recorded"
                 os.remove(filepath)
             else:
                 error = 1
@@ -133,11 +135,15 @@ def summarizer(request):
     else:
         file_form = FileUploadForm()
 
-    return render(request, "summarizer/summarizer.html", {"summary": summary, 
-    "sentence":sentence, 
-    "error":error,
-    "error_text": error_text,
-    "file_form": file_form})
+    context = {
+        "summary": summary, 
+        "sentence":sentence, 
+        "error":error,
+        "error_text": error_text,
+        "file_form": file_form,
+        "original_text": original_text
+    }
+    return render(request, "summarizer/summarizer.html", context)
 
 
 

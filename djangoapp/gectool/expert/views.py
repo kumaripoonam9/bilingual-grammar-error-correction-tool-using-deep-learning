@@ -3,11 +3,26 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from json import dumps
 import random
+import os
 
 from .models import Room, Message, ExpertLanguage, PendingExpertReview
-from expert.forms import ExpertLanguageForm
+from expert.forms import ExpertLanguageForm, InputMessageForm
+
+from spellcheck.forms import FileUploadForm
 
 
+
+
+# ----- to download files from inbox
+# @login_required(login_url='login')
+# def downloadfile(request):
+#     base_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+#     filename = ''
+
+
+
+
+# --------- shows all the rooms on side -----------
 @login_required(login_url='login')
 def chat(request):
     username = request.user
@@ -51,6 +66,9 @@ def chat(request):
     return render(request, "expert/chat.html", context)
 
 
+
+
+# ------- finding expert --------
 @login_required(login_url='login')
 def expert_review(request):
     secret_code = ''
@@ -114,8 +132,14 @@ def expert_review(request):
     return render(request, "expert/expertreview.html", context)
 
 
+
+
+#---- to display messages in the inbox ----
 @login_required(login_url='login')
 def messaging(request, room_name):
+
+    # file_form = FileUploadForm()
+    input_form = InputMessageForm()
 
     # for side list
     username = request.user
@@ -135,21 +159,48 @@ def messaging(request, room_name):
     
     get_room = Room.objects.get(room_name=room_name)
 
-    if request.method == 'POST':
-        message = request.POST['message']
-        username = request.user
-        
-        new_message = Message(room=get_room, sender=username, message=message)
-        new_message.save()
+    if request.method == "POST":
+        # print(bool(request.POST.get('message')), request.FILES.get('attachment'))
 
-        if request.user.profile.user_type == "Expert user":
-            # expert = request.user
-            # room = Room.objects.get(room_name=get_room)
-            try:
-                pending_room = PendingExpertReview.objects.get(pending_room=get_room)
-                pending_room.delete()
-            except PendingExpertReview.DoesNotExist:
-                pass
+        if request.FILES.get('attachment') or bool(request.POST.get('message'))==True:
+            input_form = InputMessageForm(request.POST, request.FILES)
+            
+            if input_form.is_valid():
+                new_message = input_form.save(commit=False)
+                new_message.room = get_room
+                new_message.sender = request.user
+                new_message.save()
+
+                input_form = InputMessageForm()
+
+                if request.user.profile.user_type == "Expert user":
+                    # expert = request.user
+                    # room = Room.objects.get(room_name=get_room)
+                    try:
+                        pending_room = PendingExpertReview.objects.get(pending_room=get_room)
+                        pending_room.delete()
+                    except PendingExpertReview.DoesNotExist:
+                        pass
+    # else:
+    #     expertlangform = ExpertLanguageForm()
+
+
+    # if request.method == 'POST':
+    #     message = request.POST['message']
+    #     message = message.strip()
+    #     username = request.user
+
+    #     new_message = Message(room=get_room, sender=username, message=message)
+    #     new_message.save()
+
+    #     if request.user.profile.user_type == "Expert user":
+    #         # expert = request.user
+    #         # room = Room.objects.get(room_name=get_room)
+    #         try:
+    #             pending_room = PendingExpertReview.objects.get(pending_room=get_room)
+    #             pending_room.delete()
+    #         except PendingExpertReview.DoesNotExist:
+    #             pass
 
     get_messages = Message.objects.filter(room=get_room)
     get_sender = request.user
@@ -169,10 +220,14 @@ def messaging(request, room_name):
         'room_name': room_name,
 
         'rooms': get_rooms,
-        'allusers': allusers
+        'allusers': allusers,
+
+        # 'file_form': file_form,
+        'input_form': input_form,
     }
     
     return render(request, "expert/chat.html", context)
+
 
 
 @login_required(login_url='login')
@@ -193,3 +248,7 @@ def verification(request):
         'expertlangform': expertlangform
     }
     return render(request, "expert/expert_verification.html", context)
+
+
+
+

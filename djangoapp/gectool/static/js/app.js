@@ -116,6 +116,14 @@ function stopRecording() {
     rec.exportWAV(createDownloadLink);
 }
 
+// for making tick appear and disappear
+function tick_confirmation() {
+    document.getElementById("tick_confirmation").innerHTML = '<i class="fas fa-check text-success"></i>';
+    setTimeout(()=>{
+        document.getElementById("tick_confirmation").remove();
+    },5000)
+}
+
 function createDownloadLink(blob) {
 
     var url = URL.createObjectURL(blob);
@@ -149,7 +157,7 @@ function createDownloadLink(blob) {
     var upload = document.createElement('a');
     // upload.href = "djangoapp/gectool/spellcheck/audio";
     // upload.href = "href='{% url spellcheck/views %}' "; 
-    upload.innerHTML = "<br><small style='cursor: pointer;' class='text-primary text-decoration-underline'>Confirm if the recorded audio is correct by clicking here<small><br><br>";
+    upload.innerHTML = "<br><small onclick='tick_confirmation();'  style='cursor: pointer;' class='text-primary text-decoration-underline'>Confirm if the recorded audio is correct by clicking here<small> <span id='tick_confirmation'></span> <br><br>";
 
     li.appendChild(upload) // add the upload link to li
 

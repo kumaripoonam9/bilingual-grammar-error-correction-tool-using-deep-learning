@@ -15,6 +15,7 @@ Over 1000 people have contributed to our missions and joined our family. We have
 
 -----------------------------------------------------------
 
+
 ENGLISH SPELL CHECK:
 
 Share infomation aout yourslf by creating a profle README, whih apears atthe top of yur proflepage.
@@ -29,11 +30,14 @@ footbaall
 -----------------------------------------------------------
 
 
+
 ENGLISH GRAMMAR CHECK:
 
 Hello,
 My name is Susan. I'm forteen and I life in Germany. My hobbys are go to discos and jogging, sometimes I hear music in the radio. My birthday is on Friday. I hope I will become a new guitar. I'm looking forward to get a e-mail from you.
 
+
+-----------------------------------------------------------
 
 
 hindi spell check:
