@@ -6,10 +6,21 @@ from django.contrib.auth.models import User
 
 class Room(models.Model):
     room_name = models.CharField(max_length=255)
+    user_room_name = models.CharField(max_length=255, null=True, blank=True)
+    expert_room_name = models.CharField(max_length=255, null=True, blank=True)
 
     def __str__(self):
         return self.room_name 
     
+    # def edit_room_name(self, edited_room_name, user_profile):
+    #     if user_profile == "Expert user":
+    #         self.expert_room_name = edited_room_name
+    #     else:
+    #         self.user_room_name = edited_room_name
+    #     self.save()
+
+    #     return self.room_name 
+
 
 
 

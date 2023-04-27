@@ -22,14 +22,23 @@
 
                     <table class="table table-sm w-100 room_list text-start">
                         <tbody>
-                            {% comment %} {% if not rooms %} {% endcomment %}
+
                             <div class="text-secondary text-start m-2 mt-3">Your chats</div>
-                            {% comment %} {% endif %} {% endcomment %}
-                            {% for room in rooms %}
-                            <tr>
-                                <th scope="row"><a href="{% url 'room' room_name=room %}"><i class="fas fa-comments"></i> &nbsp; {{room}}</a></th>
-                            </tr>
-                            {% endfor %}
+                            
+                            {% if request.user.profile.user_type == "Normal user" %}
+                                {% for room in allrooms %}
+                                <tr>
+                                    <th scope="row"><a href="{% url 'room' room_name=room.room_name %}"><i class="fas fa-comments"></i> &nbsp; {% if room.user_room_name %}{{room.user_room_name}}{% else %}{{room.room_name}}{% endif %} </a></th>
+                                </tr>
+                                {% endfor %}
+                            {% else %}
+                                {% for room in allrooms %}
+                                <tr>
+                                    <th scope="row"><a href="{% url 'room' room_name=room.room_name %}"><i class="fas fa-comments"></i> &nbsp; {% if room.expert_room_name %}{{room.expert_room_name}}{% else %}{{room.room_name}}{% endif %} </a></th>
+                                </tr>
+                                {% endfor %}
+                            {% endif %}
+
                         </tbody>
                     </table>
                 {% comment %} </small> {% endcomment %}
@@ -60,9 +69,23 @@
                 
                 {% else %}
                 
-                <div class="chat-user-name  fw-bold text-white p-3"><i class="fas fa-comments fw-0"></i>&nbsp;&nbsp;&nbsp; <span  contenteditable="true">{{room_name}}</span></div>
+                <div class="chat-user-name  fw-bold text-white p-3 mb-0"><i class="fas fa-comments fw-0"></i>&nbsp;&nbsp;&nbsp; <span  contenteditable="true" id="room_name_display">
+                    {% if request.user.profile.user_type == "Normal user" and current_room.user_room_name %}
+                        {{current_room.user_room_name}}
+                    {% elif request.user.profile.user_type == "Expert user" and current_room.expert_room_name %}
+                        {{current_room.expert_room_name}}
+                    {% else %}
+                        {{room_name}}
+                    {% endif %}
+                </span></div>
                 
                 <div class="parent">
+
+                    <span id="original_room_name" class='invisible small'>{{room_name}}</span>
+
+                    {% comment %} for editing room name {% endcomment %}
+                    <script src="{% static 'js/edit_room_name.js' %}" ></script>
+
                     <div id="chatbox">
                         {% for msg in messages %}
                             {% if msg.sender != request.user.username %}

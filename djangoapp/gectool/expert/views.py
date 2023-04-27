@@ -1,9 +1,7 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
-from json import dumps
-import random
-import os
+import random, os, json
 
 from .models import Room, Message, ExpertLanguage, PendingExpertReview
 from expert.forms import ExpertLanguageForm, InputMessageForm
@@ -13,11 +11,30 @@ from spellcheck.forms import FileUploadForm
 
 
 
-# ----- to download files from inbox
-# @login_required(login_url='login')
-# def downloadfile(request):
-#     base_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-#     filename = ''
+
+# ------- edit room name
+def edit_room_name(request, room_name):
+    
+    data = json.loads(request.body)
+    print(data)
+    print(room_name)
+
+    edited_room_name = data['edited_room_name'].strip()
+
+    user_profile = request.user.profile.user_type
+    # success = room.edit_room_name(edited_room_name, user_profile)
+
+    room = Room.objects.get(room_name=room_name)
+
+    if user_profile == "Expert user":
+        room.expert_room_name = edited_room_name
+    else:
+        room.user_room_name = edited_room_name
+        
+    room.save()
+
+    context = {}
+    return render(request, "expert/chat.html", context)
 
 
 
@@ -37,6 +54,7 @@ def chat(request):
 
     get_rooms = []
     allusers = []
+
     for msg in get_messages:
         if msg.room.room_name not in get_rooms:
             room = msg.room.room_name
@@ -51,15 +69,16 @@ def chat(request):
                 if m.sender != request.user.username and m.sender not in allusers:
                     allusers.append(m.sender)
 
-
+    allrooms = Room.objects.filter(room_name__in=get_rooms)
     
-    print(room_user_map)
+    print(allrooms)
 
     print(get_rooms, allusers)
 
     context = {
         'convo': False,
         'rooms': get_rooms,
+        'allrooms': allrooms,
         'allusers': allusers
     }
     
@@ -144,6 +163,7 @@ def messaging(request, room_name):
     # for side list
     username = request.user
     get_messages = Message.objects.filter(sender=username)
+    
     get_rooms = []
     allusers = []
     for msg in get_messages:
@@ -154,6 +174,7 @@ def messaging(request, room_name):
                 if m.sender != username and m.sender not in allusers:
                     allusers.append(m.sender)
     # end-- for side list
+    allrooms = Room.objects.filter(room_name__in=get_rooms)
 
 
     
@@ -212,14 +233,20 @@ def messaging(request, room_name):
 
     # print(get_sender)
 
+    
+
     context = {
         'convo': True, 
         'messages': get_messages,
+
         'user': request.user,
         'sender': get_sender,
+
         'room_name': room_name,
+        'current_room': get_room,
 
         'rooms': get_rooms,
+        'allrooms': allrooms,
         'allusers': allusers,
 
         # 'file_form': file_form,
