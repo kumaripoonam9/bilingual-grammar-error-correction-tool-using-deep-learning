@@ -1,6 +1,7 @@
 from sumy.summarizers.lex_rank import LexRankSummarizer
 from sumy.parsers.plaintext import PlaintextParser
 from sumy.nlp.tokenizers import Tokenizer
+from math import ceil
 
 
 
@@ -15,11 +16,13 @@ def eng_summary(text):
     # For Strings
     parser=PlaintextParser.from_string(text,Tokenizer("english"))
     
+    length = ceil(len(text.split('.'))*4/10)
+
     # Using LexRank
     summarizer = LexRankSummarizer()
    
     #Summarize the document with 4 sentences
-    summary = summarizer(parser.document,2)
+    summary = summarizer(parser.document, length)
     
     # result = ""
     # for sentence in summary:

@@ -4,6 +4,20 @@ GEC TOOL Superuser
 username	:	admin
 password	:	admin
 
+
+
+s/w user details-
+
+kumaripoonam
+2q9sjo20
+
+expert
+2q9sjo20
+
+
+
+
+
 python -m pip install -U langdetect
 
 python -m pip freeze >  requirements.txt

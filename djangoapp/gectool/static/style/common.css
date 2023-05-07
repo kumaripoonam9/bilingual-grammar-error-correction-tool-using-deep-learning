@@ -188,6 +188,22 @@ body.expert {
     background-color: #e3ebf7;
 }
 
+textarea {
+    padding: 1rem !important;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
 .bg-dark-purple {
     background-color: #1F1D36 !important;
 }

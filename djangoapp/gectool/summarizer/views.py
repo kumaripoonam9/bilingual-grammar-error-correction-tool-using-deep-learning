@@ -24,6 +24,9 @@ def summarizer(request):
     sentence = 1
     text = ""
     original_text = ""
+    text_to_check_eng = ""
+    text_to_check_hi = ""
+    tab=1
     
     if request.method=="POST":
 
@@ -33,8 +36,12 @@ def summarizer(request):
 
             if lang_by_user == 'en':
                 text = request.POST.get('text_to_check_eng')
+                text_to_check_eng = text
+                text_to_check_hi = ''
             else:
                 text = request.POST.get('text_to_check_hi')
+                text_to_check_hi = text
+                text_to_check_eng = ''
             original_text = text
             if text == "" or text == False:
                 error = 1
@@ -67,7 +74,7 @@ def summarizer(request):
             file_form = FileUploadForm()
         
         elif 'file_form_button' in request.POST:
-
+            tab=3
             file_form = FileUploadForm(request.POST, request.FILES)
             if file_form.is_valid():
                 ext = handle_uploaded_file(request.FILES['file'])
@@ -93,7 +100,7 @@ def summarizer(request):
                 text = text.replace("\n"," ")
                 text = text.replace("\r","")
 
-                if lang_by_user=="en":
+                if lang_detected=="en":
                     # text = text.replace("\n"," ")
                     # text = text.replace("\r","")
                     summary = eng_summary(text)
@@ -107,6 +114,7 @@ def summarizer(request):
                 print(summary)
 
         elif 'audio_form_button' in request.POST:
+            tab=2
             lang_by_user = request.POST.get('lang_by_user')
             filepath = 'summarizer/audio/gec_speech_record.wav'
 
@@ -141,7 +149,10 @@ def summarizer(request):
         "error":error,
         "error_text": error_text,
         "file_form": file_form,
-        "original_text": original_text
+        "original_text": original_text,
+        'text_to_check_hi': text_to_check_hi,
+        'text_to_check_eng': text_to_check_eng,
+        'tab': tab,
     }
     return render(request, "summarizer/summarizer.html", context)
 

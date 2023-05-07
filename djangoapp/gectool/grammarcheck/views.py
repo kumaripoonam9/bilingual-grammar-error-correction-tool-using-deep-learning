@@ -23,7 +23,10 @@ def grammarcheck(request):
     error_text = ""
     sentence = 1
     text_to_check = ""
+    text_to_check_eng = ""
+    text_to_check_hi = ""
     original_text = ""
+    tab=1
     
     if request.method=="POST":
 
@@ -33,8 +36,12 @@ def grammarcheck(request):
 
             if lang_by_user == 'en':
                 text_to_check = request.POST.get('text_to_check_eng')
+                text_to_check_eng = text_to_check
+                text_to_check_hi = ''
             else:
                 text_to_check = request.POST.get('text_to_check_hi')
+                text_to_check_eng = ''
+                text_to_check_hi = text_to_check
             
             original_text = text_to_check
 
@@ -61,7 +68,7 @@ def grammarcheck(request):
                             # corrected_text += ct.capitalize()
                             corrected_text += ct
                             corrected_text += " "
-                        print(corrected_text)
+                        # print(corrected_text)
                     else:
                         corrected_text = correct_grammar_hindi(text_to_check)
 
@@ -69,7 +76,7 @@ def grammarcheck(request):
             file_form = FileUploadForm()
         
         elif 'file_form_button' in request.POST:
-
+            tab=3
             file_form = FileUploadForm(request.POST, request.FILES)
             if file_form.is_valid():
                 ext = handle_uploaded_file(request.FILES['file'])
@@ -90,35 +97,36 @@ def grammarcheck(request):
                 lang_detected = detect(text_to_check)
                 lang_detected = lang_detected.split(" ")[0]
 
-                if lang_by_user != lang_detected:
-                    error = 1
-                    error_text = "Input language and uploaded file language don't match"
+                # if lang_by_user != lang_detected:
+                #     error = 1
+                #     error_text = "Input language and uploaded file language don't match"
+                # else:
+                #     print(text_to_check)
+                original_text = text_to_check
+                
+                if lang_detected=="en":
+                    text_to_check = text_to_check.split("\n")
+                    text_to_check = list(filter(None, text_to_check))
+                # print(text_to_check)
+                    for t in text_to_check:
+                        if not t.isspace():
+                            t = t.split(".")
+                            for x in t:
+                                if not x.isspace():
+                                    ct = correct_grammar_eng(x.strip(), 1)[0]
+                                    corrected_text += ct
+                                    corrected_text += " "
+                        corrected_text = corrected_text + "\n"
+                    print(corrected_text)
                 else:
-                    print(text_to_check)
-                    original_text = text_to_check
-                    
-                    if lang_by_user=="en":
-                        text_to_check = text_to_check.split("\n")
-                        text_to_check = list(filter(None, text_to_check))
-                    # print(text_to_check)
-                        for t in text_to_check:
-                            if not t.isspace():
-                                t = t.split(".")
-                                for x in t:
-                                    if not x.isspace():
-                                        ct = correct_grammar_eng(x.strip(), 1)[0]
-                                        corrected_text += ct
-                                        corrected_text += " "
-                            corrected_text = corrected_text + "\n"
-                        print(corrected_text)
-                    else:
-                        # text_to_check = text_to_check.replace("\n"," ")
-                        corrected_text = correct_grammar_hindi(text_to_check)
-                        # corrected_text = "hindi model not implemented"
+                    # text_to_check = text_to_check.replace("\n"," ")
+                    corrected_text = correct_grammar_hindi(text_to_check)
+                    # corrected_text = "hindi model not implemented"
                
                 print(corrected_text)
 
         elif 'audio_form_button' in request.POST:
+            tab=2
             lang_by_user = request.POST.get('lang_by_user')
             filepath = 'grammarcheck/audio/gec_speech_record.wav'
 
@@ -140,6 +148,13 @@ def grammarcheck(request):
             # creating file form
             file_form = FileUploadForm()
 
+        corrected_text = corrected_text.split('.')
+        corrected_text = [x.strip() for x in corrected_text]
+        corrected_text = list(filter(None, corrected_text))
+        # print(corrected_text)
+        corrected_text = '. '.join(corrected_text) + '.'
+        # print(corrected_text)
+
         request.session['corrected_text'] = corrected_text
         request.session['toolname'] = "Grammar Correction"
 
@@ -153,7 +168,10 @@ def grammarcheck(request):
         "error":error,
         "error_text": error_text,
         "file_form": file_form,
-        "original_text": original_text
+        "original_text": original_text,
+        'tab': tab,
+        'text_to_check_eng': text_to_check_eng,
+        'text_to_check_hi': text_to_check_hi,
     }
 
     return render(request, "grammarcheck/grammarcheck.html", context)

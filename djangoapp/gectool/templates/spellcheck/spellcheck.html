@@ -7,127 +7,358 @@
 {% block mainbody %}
 
     <span class="text-center">
+
         <div class="mb-5">
             <h2 class="fw-bolder main-heading">Spelling Correction</h2>
             <h3 class="main-heading">for both Hindi and English</h3>
         </div>
 
-        {% comment %} type in form {% endcomment %}
-        <div class="box-center row mb-4">
+        <div class="row bg-white rounded-5 shadow-3 p-3">
 
-            <form method="post" name="textarea_form" class="">
-                {% csrf_token %}
+            <!-- Tabs navs -->
+            <ul class="nav nav-tabs mb-3" id="ex1" role="tablist">
+                <li class="nav-item" role="presentation">
+                    {% if tab == 1 %}
+                    <a
+                    class="nav-link active"
+                    id="ex1-tab-1"
+                    data-mdb-toggle="tab"
+                    href="#ex1-tabs-1"
+                    role="tab"
+                    aria-controls="ex1-tabs-1"
+                    aria-selected="true"
+                    >Type in text</a>
+                    {% else %}
+                    <a
+                    class="nav-link"
+                    id="ex1-tab-1"
+                    data-mdb-toggle="tab"
+                    href="#ex1-tabs-1"
+                    role="tab"
+                    aria-controls="ex1-tabs-1"
+                    aria-selected="false"
+                    >Type in text</a>
+                    {% endif %}
+                
+                </li>
+                <li class="nav-item" role="presentation">
+                    {% if tab == 2 %}
+                    <a
+                    class="nav-link active"
+                    id="ex1-tab-2"
+                    data-mdb-toggle="tab"
+                    href="#ex1-tabs-2"
+                    role="tab"
+                    aria-controls="ex1-tabs-2"
+                    aria-selected="true"
+                    >Speech to text</a>
+                    {% else %}
+                    <a
+                    class="nav-link"
+                    id="ex1-tab-2"
+                    data-mdb-toggle="tab"
+                    href="#ex1-tabs-2"
+                    role="tab"
+                    aria-controls="ex1-tabs-2"
+                    aria-selected="false"
+                    >Speech to text</a>
+                    {% endif %}
+                </li>
+                <li class="nav-item" role="presentation">
+                    {% if tab == 3 %}
+                    <a
+                    class="nav-link active"
+                    id="ex1-tab-3"
+                    data-mdb-toggle="tab"
+                    href="#ex1-tabs-3"
+                    role="tab"
+                    aria-controls="ex1-tabs-3"
+                    aria-selected="true"
+                    >File upload</a>
+                    {% else %}
+                    <a
+                    class="nav-link"
+                    id="ex1-tab-3"
+                    data-mdb-toggle="tab"
+                    href="#ex1-tabs-3"
+                    role="tab"
+                    aria-controls="ex1-tabs-3"
+                    aria-selected="false"
+                    >File upload</a>
+                    {% endif %}
+                </li>
+            </ul>
+            <!-- Tabs navs -->
+            
+            <!-- Tabs content -->
+            <div class="tab-content" id="ex1-content">
+                {% comment %} <div
+                class="tab-pane fade show active"
+                id="ex1-tabs-1"
+                role="tabpanel"
+                aria-labelledby="ex1-tab-1"
+                > {% endcomment %}
+                {% if tab == 1 %}
+                <div
+                class="tab-pane fade show active"
+                id="ex1-tabs-1"
+                role="tabpanel"
+                aria-labelledby="ex1-tab-1"
+                >
+                {% else %}
+                <div
+                class="tab-pane fade"
+                id="ex1-tabs-1"
+                role="tabpanel"
+                aria-labelledby="ex1-tab-1"
+                >
+                {% endif %}
+                    <div class="row">
+                        <!-- Left column with fixed width -->
+                        <div class="col-md-6 border-end border-2">
+                            <form method="post" name="textarea_form" class="p-2">
+                                {% csrf_token %}        
+                                {% comment %} language {% endcomment %}
+                                <p>Select language in which you want to check your spellings:</p>
+                                <div class="mb-3">
+                                    <div class="form-check form-check-inline">
+                                        <input
+                                            {% comment %} required {% endcomment %}
+                                            class="form-check-input-lg"
+                                            type="radio"
+                                            name="lang_by_user"
+                                            id="en"
+                                            value="en" 
+                                            checked />
+                                        <label class="form-check-label" for="eng" >English</label>
+                                    </div>
+                        
+                                    <div class="form-check form-check-inline">
+                                        <input
+                                            {% comment %} required {% endcomment %}
+                                            class="form-check-input-lg"
+                                            type="radio"
+                                            name="lang_by_user"
+                                            id="hi"
+                                            value="hi"/>
+                                        <label class="form-check-label" for="hi">Hindi</label>
+                                    </div>
+                                </div>
 
-                {% comment %} language {% endcomment %}
-                <p>Select language in which you want to check your spellings:</p>
-                <div class="mb-3">
-                    <div class="form-check form-check-inline">
-                        <input
-                            {% comment %} required {% endcomment %}
-                            class="form-check-input-lg"
-                            type="radio"
-                            name="lang_by_user"
-                            id="en"
-                            value="en" 
-                            checked />
-                        <label class="form-check-label" for="eng" >English</label>
-                    </div>
+                                <div class="m-auto">
+                                    
+                                    <!-- Message input -->
+                                    <div class="form-outline mt-3 mb-4">
+                                        <textarea
+                                            class="form-control"
+                                            id="text_to_check"
+                                            name="text_to_check_eng"
+                                            rows="3"
+                                            maxlength="10000000" 
+                                            >{{text_to_check_eng}}</textarea>
+                                        <label class="form-label" for="text_to_check">Enter text here for english</label>
+                                    </div>
+
+                                    <style>
+                                        textarea {
+                                            padding: 1rem !important;
+                                        }
+                                    </style>
+
+                                    <div class='small text-start text-muted'>हिन्दी भाषा के लिए यहाँ लिखें</div>
+                                    <script language="javascript">
+                                        CreateCustomHindiTextArea("text_to_check_hi","{{text_to_check_hi}}",72,3,true);
+                                    </script>
         
-                    <div class="form-check form-check-inline">
-                        <input
-                            {% comment %} required {% endcomment %}
-                            class="form-check-input-lg"
-                            type="radio"
-                            name="lang_by_user"
-                            id="hi"
-                            value="hi"/>
-                        <label class="form-check-label" for="hi">Hindi</label>
+                                    <!-- Submit button -->
+                                    <button name="textarea_form_button" type="submit" class="btn btn-primary btn-block mb-4 mt-3">Correct spellings</button>
+                                </div>
+                            </form>
+                        </div>
+
+                        <!-- Right column with fluid width -->
+                        <div class="col-md-6 split">
+                            {% comment %} corrected output {% endcomment %}
+                            {% if corrected_text != '' %}
+                            <div class="text-center p-3 pt-0">
+                                <div class="card-header pb-4">
+                                    <ul class="nav nav-pills text-justify card-header-tabs d-flex justify-content-between">
+                                        <li class="nav-item">
+                                                <button class="nav-link active btn btn-secondary rounded-3" aria-current="true"
+                                                 
+                                                onclick="copyText()"><i class="fas fa-copy fa-2x"></i></button>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a href="{% url 'result/pdf' %}">
+                                                <button class="nav-link active btn btn-secondary rounded-3" aria-current="true"
+                                                onclick=""><i class="fas fa-download fa-2x"></i></button>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </div>
+                                <div class="card-body pt-3">
+                                    <p class="text-start card-text pb-4" id="result_text">{{ corrected_text|linebreaksbr }}</p>
+                                </div>
+                            </div>
+                            {% endif %}
+                        </div>
                     </div>
                 </div>
-                <div class="m-auto bg-white p-5 pb-4 rounded-5 col-8 shadow-3">
-                    <script language="javascript">
-                        CreateCustomHindiTextArea("text_to_check_hi","हिन्दी भाषा के लिए यहाँ लिखें",97,5,true);
-                    </script>
-                    <!-- Message input -->
-                    <div class="form-outline mt-3 mb-4">
-                        <textarea
-                            class="form-control"
-                            id="text_to_check"
-                            name="text_to_check_eng"
-                            rows="10"
-                            maxlength="1000"
-                            ></textarea>
-                        <label class="form-label" for="text_to_check">Enter text here for english</label>
-                    </div>
 
-                    <!-- Submit button -->
-                    <button name="textarea_form_button" type="submit" class="btn btn-primary btn-block mb-4">Correct spellings</button>
+                {% if tab == 2 %}
+                <div class="tab-pane fade show active" id="ex1-tabs-2" role="tabpanel" aria-labelledby="ex1-tab-2">
+                {% else %}
+                <div class="tab-pane fade" id="ex1-tabs-2" role="tabpanel" aria-labelledby="ex1-tab-2">
+                {% endif %}
+
+                    <div class="row">
+                        <!-- Left column with fixed width -->
+                        <div class="col-md-6 border-end border-2">
+                            <form method="post" name="audio_form" id="audio_form" class="pt-2">
+                                {% csrf_token %}
+                                {% comment %} language {% endcomment %}
+                                <p class="">Select language in which you want to check your spellings:</p>
+                                <div class="mb-3">
+                                    <div class="form-check form-check-inline">
+                                        <input
+                                            {% comment %} required {% endcomment %}
+                                            class="form-check-input-lg"
+                                            type="radio"
+                                            name="lang_by_user"
+                                            id="lang_by_user"
+                                            value="en" 
+                                            checked />
+                                        <label class="form-check-label" for="eng" >English</label>
+                                    </div>
+                                    <div class="form-check form-check-inline">
+                                        <input
+                                            {% comment %} required {% endcomment %}
+                                            class="form-check-input-lg"
+                                            type="radio"
+                                            name="lang_by_user"
+                                            id="lang_by_user"
+                                            value="hi"/>
+                                        <label class="form-check-label" for="hi">Hindi</label>
+                                    </div>
+                                </div>
+                                <div class="m-auto p-3 pb-4 rounded-5 col-8">
+                                    {% comment %} audio input {% endcomment %}
+                                    <div class="" id="controls">
+                                        {% comment %} <h6 class="main-heading pb-2">Speak here to get results:</h6> {% endcomment %}
+                                        <!-- start -->
+                                        <button id="recordButton" class="btn-mic btn btn-secondary btn-lg mb-4">
+                                            <i class="fas fa-3x fa-microphone"></i>
+                                            Start
+                                        </button>
+                                        <!-- pause : hidden bcuz not working !!!-->
+                                        <button id="pauseButton" class="d-none btn-mic btn btn-secondary btn-lg mb-4" disabled >
+                                            <i class="fas fa-3x fa-pause"></i>
+                                            pause
+                                        </button>
+                                        <!-- stop -->
+                                        <button id="stopButton" class="btn-mic btn btn-secondary btn-lg mb-4" disabled>
+                                            <i class="fas fa-3x fa-microphone-slash"></i>
+                                            stop
+                                        </button>
+                                    </div>
+        
+                                    <div id="recordingsList"></div>
+                                    <!-- inserting these scripts at the end to be able to use all the elements in the DOM -->
+                                    <script src="{% static 'js/recorder.js' %}"></script>
+                                    <script src="{% static 'js/app.js' %}"></script>
+        
+                                    <!-- Submit button -->
+                                    <button name="audio_form_button" type="submit" class="btn btn-primary btn-block mb-4">Correct spellings</button>
+                                </div>
+                            </form>
+                        </div>
+                        
+                        <!-- Right column with fluid width -->
+                        <div class="col-md-6 split">
+                            {% comment %} corrected output {% endcomment %}
+                            {% if corrected_text != '' %}
+                            <div class="text-center p-3 pt-0">
+                                <div class="card-header pb-4">
+                                    <ul class="nav nav-pills text-justify card-header-tabs d-flex justify-content-between">
+                                        <li class="nav-item">
+                                                <button class="nav-link active btn btn-secondary rounded-3" aria-current="true"
+                                                 
+                                                onclick="copyText()"><i class="fas fa-copy fa-2x"></i></button>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a href="{% url 'result/pdf' %}">
+                                                <button class="nav-link active btn btn-secondary rounded-3" aria-current="true"
+                                                onclick=""><i class="fas fa-download fa-2x"></i></button>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </div>
+                                <div class="card-body pt-3">
+                                    <p class="text-start card-text pb-4" id="result_text">{{ corrected_text|linebreaksbr }}</p>
+                                </div>
+                            </div>
+                            {% endif %}
+                        </div>
+                    </div>
                 </div>
-            </form>
 
-        </div>
+                {% if tab == 3 %}
+                <div class="tab-pane fade show active" id="ex1-tabs-3" role="tabpanel" aria-labelledby="ex1-tab-3">
+                {% else %}
+                <div class="tab-pane fade" id="ex1-tabs-3" role="tabpanel" aria-labelledby="ex1-tab-3">
+                {% endif %}
+                    <div class="row">
+                        <!-- Left column with fixed width -->
+                        <div class="col-md-6 border-end border-2">
+                            <form method="post" name="file_form" class="p-2" enctype="multipart/form-data">
+                                {% csrf_token %}
+                                {% comment %} language {% endcomment %}
+                         
+                                <div class="m-auto p-4 pb-4">
+                                    {% comment %} file uploads {% endcomment %}
+                                    <div class="mb-5">
+                                        {% comment %} <h6 class="main-heading pb-2">Upload your file here:</h6> {% endcomment %}
+                                        <p class="small">Note: Kindly ensure the uploaded file is in either .doc, .docx, .pdf, .txt formats</p>
+                                        {% for inp in file_form %}{{inp}}{% endfor %}
+                                    </div>
+        
+                                    <!-- Submit button -->
+                                    <button name="file_form_button" type="submit" class="btn btn-primary btn-block mb-4">Correct spellings</button>
+                                </div>
+                            </form>
+                        </div>
 
-        <p class="or">OR</p>
-
-        <div class="box-center row mb-4">
-            {% comment %} audio form {% endcomment %}
-            <form method="post" name="audio_form" action="">
-                {% csrf_token %}
-                {% comment %} language {% endcomment %}
-                <p class="">Select language in which you want to check your spellings:</p>
-                <div class="mb-3">
-                    <div class="form-check form-check-inline">
-                        <input
-                            {% comment %} required {% endcomment %}
-                            class="form-check-input-lg"
-                            type="radio"
-                            name="lang_by_user"
-                            id="en"
-                            value="en" 
-                            checked />
-                        <label class="form-check-label" for="eng" >English</label>
-                    </div>
-                    <div class="form-check form-check-inline">
-                        <input
-                            {% comment %} required {% endcomment %}
-                            class="form-check-input-lg"
-                            type="radio"
-                            name="lang_by_user"
-                            id="hi"
-                            value="hi"/>
-                        <label class="form-check-label" for="hi">Hindi</label>
+                        <!-- Right column with fluid width -->
+                        <div class="col-md-6 split">
+                            {% comment %} corrected output {% endcomment %}
+                            {% if corrected_text != '' %}
+                            <div class="text-center p-3 pt-0">
+                                <div class="card-header pb-4">
+                                    <ul class="nav nav-pills text-justify card-header-tabs d-flex justify-content-between">
+                                        <li class="nav-item">
+                                                <button class="nav-link active btn btn-secondary rounded-3" aria-current="true"
+                                                 
+                                                onclick="copyText()"><i class="fas fa-copy fa-2x"></i></button>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a href="{% url 'result/pdf' %}">
+                                                <button class="nav-link active btn btn-secondary rounded-3" aria-current="true"
+                                                onclick=""><i class="fas fa-download fa-2x"></i></button>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </div>
+                                <div class="card-body pt-3">
+                                    <p class="text-start card-text pb-4" id="result_text">{{ corrected_text|linebreaksbr }}</p>
+                                </div>
+                            </div>
+                            {% endif %}
+                        </div>
                     </div>
                 </div>
-                <div class="m-auto bg-white p-5 pb-4 rounded-5 col-8 shadow-3">
-                    {% comment %} audio input {% endcomment %}
-                    <div class="" id="controls">
-                        <h6 class="main-heading pb-2">Speak here to get results:</h6>
-                        <!-- start -->
-                        <button id="recordButton" class="btn-mic btn btn-secondary btn-lg mb-4">
-                            <i class="fas fa-3x fa-microphone"></i>
-                            Start
-                        </button>
-                        <!-- pause : hidden bcuz not working !!!-->
-                        <button id="pauseButton" class="d-none btn-mic btn btn-secondary btn-lg mb-4" disabled >
-                            <i class="fas fa-3x fa-pause"></i>
-                            pause
-                        </button>
-                        <!-- stop -->
-                        <button id="stopButton" class="btn-mic btn btn-secondary btn-lg mb-4" disabled>
-                            <i class="fas fa-3x fa-microphone-slash"></i>
-                            stop
-                        </button>
-                    </div>
-
-                    <div id="recordingsList"></div>
-                    <!-- inserting these scripts at the end to be able to use all the elements in the DOM -->
-                    <script src="{% static 'js/recorder.js' %}"></script>
-                    <script src="{% static 'js/app.js' %}"></script>
-
-                    <!-- Submit button -->
-                    <button name="audio_form_button" type="submit" class="btn btn-primary btn-block mb-4">Correct spellings</button>
-                </div>
-            </form>
+                
+            </div>
+            <!-- Tabs content -->
 
             {% if error == 1 %}
             <p class="card-text pb-4 class text-center fixed-bottom alert alert-danger m-3 col-3" id="error_text">
@@ -135,83 +366,13 @@
                 {{error_text}}
             </p>
             {% endif %}
-        </div>
-        
-        <p class="or">OR</p>
 
-        {% comment %} file form {% endcomment %}
-        <div class="box-center row mb-4">
-            <form method="post" name="file_form" class="" enctype="multipart/form-data">
-                {% csrf_token %}
-                {% comment %} language {% endcomment %}
-                <p class="">Select language in which you want to check your spellings:</p>
-                <div class="mb-3">
-                    <div class="form-check form-check-inline">
-                        <input
-                            {% comment %} required {% endcomment %}
-                            class="form-check-input-lg"
-                            type="radio"
-                            name="lang_by_user"
-                            id="en"
-                            value="en" 
-                            checked />
-                        <label class="form-check-label" for="eng" >English</label>
-                    </div>
-                    <div class="form-check form-check-inline">
-                        <input
-                            {% comment %} required {% endcomment %}
-                            class="form-check-input-lg"
-                            type="radio"
-                            name="lang_by_user"
-                            id="hi"
-                            value="hi"/>
-                        <label class="form-check-label" for="hi">Hindi</label>
-                    </div>
-                </div>
-                <div class="m-auto bg-white p-5 pb-4 rounded-5 col-8 shadow-3">
-                    {% comment %} file uploads {% endcomment %}
-                    <div class="mb-5">
-                        <h6 class="main-heading pb-2">Upload your file here:</h6>
-                        <p class="small">Note: Kindly ensure the uploaded file is in either .doc, .docx, .pdf, .txt formats</p>
-                        {% for inp in file_form %}{{inp}}{% endfor %}
-                    </div>
-
-                    <!-- Submit button -->
-                    <button name="file_form_button" type="submit" class="btn btn-primary btn-block mb-4">Correct spellings</button>
-                </div>
-            </form>
-
-        </div>
-
-
-        <div class="box-center row">
-            {% comment %} corrected output {% endcomment %}
-            {% if corrected_text != '' %}
-            <div class="card text-center mt-5 col-9">
-                <div class="card-header">
-                    <ul class="nav nav-pills card-header-tabs">
-                        <li class="nav-item">
-                               <button class="nav-link active btn btn-secondary" aria-current="true"
-                               autofocus 
-                               onclick="copyText()">Copy text</button>
-                        </li>
-                        <li class="nav-item">
-                            <a href="{% url 'result/pdf' %}">
-                                <button class="nav-link active btn btn-secondary" aria-current="true"
-                                onclick="">Download</button>
-                            </a>
-                        </li>
-                    </ul>
-                </div>
-                <div class="card-body">
-                    <h5 class="card-title pb-3">Original Input</h5>
-                    <p class="text-start card-text pb-4">{{original_text}}</p>
-                    <h5 class="card-title pb-3">Spellings Corrected Output</h5>
-                    <p class="text-start card-text pb-4" id="result_text">{{ corrected_text|linebreaksbr }}</p>
-                </div>
             </div>
-            {% endif %}
         </div>
+
+
+
+        
     </span>
 
     <script>
