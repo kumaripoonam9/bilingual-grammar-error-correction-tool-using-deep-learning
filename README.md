@@ -60,7 +60,11 @@ The accompanying document details all of the test scenarios and also includes a 
 
 ## Developers
 
-Made by [@devanshiipatel](https://github.com/devanshiipatel) [@sreevidya-m](https://github.com/sreevidya-m) [@kumaripoonam9](https://github.com/kumaripoonam9) [@dishika1606](https://github.com/dishika1606)  
+Made by: 
+[@devanshiipatel](https://github.com/devanshiipatel) 
+[@sreevidya-m](https://github.com/sreevidya-m) 
+[@kumaripoonam9](https://github.com/kumaripoonam9) 
+[@dishika1606](https://github.com/dishika1606)  
 
 ## Instructions to start the project
 
