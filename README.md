@@ -52,9 +52,24 @@ The output produced by the GEC Tool may or may not be accurate according to the 
 
 The GEC tool only supports English and Hindi currently. More international, regional, or local languages will be introduced in the future, depending on the usage location. The programme will contain paraphrasing and a plagiarism checker, both of which are widely utilized in many different businesses. Regressive testing will be used to evaluate the language model’s fine-tuning process, and it will be applied accordingly.
 
+## Test cases
+
+The accompanying document details all of the test scenarios and also includes a comparison with another online tool.
+
+[Test case document](https://docs.google.com/document/d/1k5p1NYFjGmAx2dSZtgM60r2WVttQBowIZ3-_OvKWqIs/edit?usp=sharing)
+
+## Developers
 
 Made by [@devanshiipatel](https://github.com/devanshiipatel) [@sreevidya-m](https://github.com/sreevidya-m) [@kumaripoonam9](https://github.com/kumaripoonam9) [@dishika1606](https://github.com/dishika1606)  
 
-```
-pip install -r requirements.txt
-```
+## Instructions to start the project
+
+The folder labelled "djangoapp" contains the actual live code.
+After entering the directory where that folder is located, perform the following actions.
+
+1. Create a python virtual enviroment
+2. Run the following command
+    ```
+    pip install -r requirements.txt
+    python manage.py runserver
+    ```
