@@ -69,7 +69,9 @@ After entering the directory where that folder is located, perform the following
 
 1. Create a python virtual enviroment
 2. Run the following command
-    ```
-    pip install -r requirements.txt
-    python manage.py runserver
-    ```
+
+```
+pip install -r requirements.txt
+
+python manage.py runserver
+```
