@@ -47,30 +47,34 @@ def grammarcheck(request):
 
             if text_to_check == "" or text_to_check == False:
                 error = 1
-                error_text = "Please type something"
-            else:
+                if lang_by_user=='en':
+                    error_text = "Please type something in the english textarea"
+                else:
+                    error_text = "Please type something in the hindi textarea"
+            else: 
                 # lang_by_user = request.POST.get('lang_by_user')
                 # text_to_check = request.POST.get('text_to_check')
 
                 text_to_check = text_to_check.replace("\n"," ")
 
-                lang_detected = detect(text_to_check)
-                lang_detected = lang_detected.split(" ")[0]
+                # lang_detected = detect(text_to_check)
+                # lang_detected = lang_detected.split(" ")[0]
 
-                if lang_by_user=="en" and lang_detected!=lang_by_user or lang_by_user=="hi" and lang_detected=="en":
-                    error = 1
-                    error_text = "Language from input and language selected by user don't match!"
+                # if lang_by_user=="en" and lang_detected!=lang_by_user or lang_by_user=="hi" and lang_detected=="en":
+                #     error = 1
+                #     error_text = "Language from input and language selected by user don't match!"
+                # else:
+                if lang_by_user=="en":
+                    text_to_check = text_to_check.split(".")
+                    for t in text_to_check:
+                        ct = correct_grammar_eng(t.strip(), 1)[0]
+                        # corrected_text += ct.capitalize()
+                        corrected_text += ct
+                        corrected_text += " "
+                    # print(corrected_text)
                 else:
-                    if lang_by_user=="en":
-                        text_to_check = text_to_check.split(".")
-                        for t in text_to_check:
-                            ct = correct_grammar_eng(t.strip(), 1)[0]
-                            # corrected_text += ct.capitalize()
-                            corrected_text += ct
-                            corrected_text += " "
-                        # print(corrected_text)
-                    else:
-                        corrected_text = correct_grammar_hindi(text_to_check)
+                    corrected_text = correct_grammar_hindi(text_to_check)
+                    print(corrected_text)
 
             # creating forms for audio and file upload
             file_form = FileUploadForm()
@@ -148,12 +152,13 @@ def grammarcheck(request):
             # creating file form
             file_form = FileUploadForm()
 
-        corrected_text = corrected_text.split('.')
-        corrected_text = [x.strip() for x in corrected_text]
-        corrected_text = list(filter(None, corrected_text))
-        # print(corrected_text)
-        corrected_text = '. '.join(corrected_text) + '.'
-        # print(corrected_text)
+        if lang_by_user=='en':
+            corrected_text = corrected_text.split('.')
+            corrected_text = [x.strip() for x in corrected_text]
+            corrected_text = list(filter(None, corrected_text))
+            # print(corrected_text)
+            corrected_text = '. '.join(corrected_text) + '.'
+            # print(corrected_text)
 
         request.session['corrected_text'] = corrected_text
         request.session['toolname'] = "Grammar Correction"

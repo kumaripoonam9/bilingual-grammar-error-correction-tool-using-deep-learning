@@ -11,7 +11,10 @@ model = T5ForConditionalGeneration.from_pretrained(model_name2).to(torch_device)
 def correct_grammar_eng(input_text, num_return_sequences):
 
     batch = tokenizer([input_text],truncation=True,padding='max_length',max_length=64, return_tensors="pt").to(torch_device)
+    
     translated = model.generate(**batch,max_length=64,num_beams=4, num_return_sequences=num_return_sequences, temperature=1.5)
+    
     tgt_text = tokenizer.batch_decode(translated, skip_special_tokens=True)
 
     return tgt_text
+

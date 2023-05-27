@@ -52,7 +52,7 @@ def textrank(document):
     seq_list = []
     for sentence in sentences:
         if sentence in sentence_list:
-            seq_list.append(sentence)
+            seq_list.append(sentence+' ')
     
     return seq_list
 

@@ -40,12 +40,19 @@ def summarizer(request):
                 text_to_check_hi = ''
             else:
                 text = request.POST.get('text_to_check_hi')
-                text_to_check_hi = text
+                text_to_check_hi = text.replace('\n',' ')
+                text_to_check_hi = text_to_check_hi.replace('\r','')
                 text_to_check_eng = ''
+            
             original_text = text
+            print(original_text)
+
             if text == "" or text == False:
                 error = 1
-                error_text = "Please type something"
+                if lang_by_user=='en':
+                    error_text = "Please type something in the english textarea"
+                else:
+                    error_text = "Please type something in the hindi textarea"
             else:
                 # text = request.POST.get('text_to_check')
                 text = text.replace("\n"," ")
@@ -53,22 +60,22 @@ def summarizer(request):
                 
                 # print(text)
 
-                lang_detected = detect(text)
-                print(lang_detected)
-                lang_detected = lang_detected.split(" ")[0]
+                # lang_detected = detect(text)
+                # print(lang_detected)
+                # lang_detected = lang_detected.split(" ")[0]
 
                 # text = text.split(".")
 
-                if lang_by_user=="en" and lang_detected!=lang_by_user or lang_by_user=="hi" and lang_detected=="en":
-                    error = 1
-                    error_text = "Language from input and language selected by user don't match!"
+                # if lang_by_user=="en" and lang_detected!=lang_by_user or lang_by_user=="hi" and lang_detected=="en":
+                #     error = 1
+                #     error_text = "Language from input and language selected by user don't match!"
+                # else:
+                if lang_by_user=="en":
+                    summary = eng_summary(text)
+                    # print(type(summary), summary)
                 else:
-                    if lang_by_user=="en":
-                        summary = eng_summary(text)
-                        # print(type(summary), summary)
-                    else:
-                        summary = hi_summary(text)
-                        # print(type(summary), summary)
+                    summary = hi_summary(text)
+                    # print(type(summary), summary)
 
             # creating forms for audio and file upload
             file_form = FileUploadForm()

@@ -50,7 +50,10 @@ def spellcheck(request):
 
             if text_to_check == "" or text_to_check == False:
                 error = 1
-                error_text = "Please type something"
+                if lang_by_user=='en':
+                    error_text = "Please type something in the english textarea"
+                else:
+                    error_text = "Please type something in the hindi textarea"
             else:
                 # lang_detected = detect(text_to_check)
                 # print("lang_detected = ", lang_detected)
@@ -93,6 +96,7 @@ def spellcheck(request):
                         else:
                             sentence = 0
                             corrected_text = hi_spellcheck(text_to_check[0])
+                            corrected_text = '\n'.join(corrected_text)
                     else:
                         for t in text_to_check:
                             if t=="।":
@@ -219,6 +223,8 @@ def spellcheck(request):
 
             # creating file form
             file_form = FileUploadForm()
+        
+        print(corrected_text)
 
         request.session['corrected_text'] = corrected_text
         request.session['toolname'] = "Spelling Correction"
